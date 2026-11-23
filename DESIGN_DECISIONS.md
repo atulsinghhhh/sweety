@@ -6,19 +6,34 @@ This document records how Sweety's interface was designed, which reference it fo
 - Visual reference supplied during development: [design.md](design.md)
 - Implementation: design tokens in [`client/src/index.css`](client/src/index.css)
 
-## 1. Why the theme is light-only, not dark as the PRD specified
+## 1. Themes: light and dark
 
-The PRD (section 7) asked for *"Dark theme as the primary theme"* with *"White/light text on dark backgrounds."* The shipped app is **light-only**.
+**History.** The PRD (section 7) asked for *"Dark theme as the primary theme."* Milestone 1 was built dark. The project owner then supplied `design.md`, a light reference, and the app became light-only. Later the owner asked for a dark theme to be added as well. The app now ships **both**, which also satisfies the PRD's original dark-theme requirement.
 
-This was a product-owner decision made during development, not a technical shortcut:
+**How it works**
+- **Default:** follows the operating system (`prefers-color-scheme`) until the user picks a theme with the sun/moon toggle. The toggle is in the app header, the landing-page nav and the login/register pages. The choice is saved in `localStorage` (`sweety_theme`), and the OS setting is followed live while no choice is saved.
+- **No flash of the wrong theme:** a small inline script in `client/index.html` sets the `.dark` class on `<html>` before the first paint. `ThemeProvider` (`src/context/ThemeContext.jsx`) keeps it in sync afterwards.
+- **Tokens only:** every colour, including the palette tokens `ink`, `steel`, `canvas`, `carbon`, `mint` and `leaf`, is a CSS variable with a light (`:root`) and a dark (`.dark`) value, so components contain almost no theme logic. The exceptions:
+  - Text on the always-dark carbon bands uses `on-carbon`, which stays light in both themes.
+  - The error icon's stroke is fixed black because it sits on amber.
+  - Dialog overlays get a stronger dim in dark mode.
+- **`dark:` utilities** are bound to the `.dark` class, not directly to the OS setting. Earlier, binding to the OS setting caused grey inputs on a Mac in dark mode, so the class-based variant is kept and `ThemeProvider` decides when it applies.
 
-1. **The project owner supplied a new visual direction.** After Milestone 1 (which was built dark, as the PRD said), the owner provided `design.md` and asked for it to be used. That reference is explicitly light (`Theme: light`, a `#f6f8f7` canvas with black ink). A later, explicit instruction from the owner takes precedence over the original PRD wording.
-2. **Mixing the two would not be coherent.** The reference's whole identity depends on a near-white canvas with dark `#0f0e12` bands used as the *only* elevation device. Inverting it into a dark theme would remove that contrast mechanism, so the choice was to follow one direction fully.
-3. **The PRD's underlying goals are still met.** Section 7's intent — clean, minimal, professional, consistent spacing, few colours, no excessive gradients or animation, accessible contrast — is satisfied. The light theme still uses dark surfaces: the login/register brand panel and the site footer are `#0f0e12` bands with light text.
+**Dark palette** (derived from the reference's carbon `#0f0e12`)
 
-**Light-only, deliberately.** `dark:` utilities are bound to a `.dark` class that is never set, so the app does not follow the operating system's dark mode. This was added after testing showed that, without it, shadcn components picked up parts of their dark styling on a Mac in dark mode, producing grey input fields.
-
-If a dark theme is needed later, it is a token change: redefine the CSS variables in `:root` under a `.dark` selector and toggle the class. No component code needs to change.
+| Role | Light | Dark | Dark contrast |
+|---|---|---|---|
+| Background | `#f6f8f7` | `#0f0e12` | — |
+| Text | `#000000` | `#f6f8f7` | 18.0:1 |
+| Muted text | `#5c5c5c` | `#a9a8b0` | 8.2:1 (7.7:1 on cards) |
+| Hairlines (`steel`) | `#e5e5e5` | `#2b2a31` | decorative |
+| Strong rules (`ink`) | `#000000` | `#f6f8f7` | — |
+| Input borders | `#000000` | `#6e6d75` | 3.8:1 (≥ 3:1 for controls) |
+| Primary button | black on `#f6f8f7` | `#0f0e12` on `#f6f8f7` | 18.0:1 |
+| Destructive / errors | `#c8102e` | `#ff7a8a` | 7.7:1 |
+| Links | `#0071bb` | `#6cb6ff` | 9.0:1 |
+| Accent green (`leaf`) | `#1f7a4d` | `#5fcf95` | 9.9:1 (8.2:1 on mint) |
+| Carbon bands | `#0f0e12` | `#1b1a21` (lifted so they stay distinct) | text 16.2:1 |
 
 ## 2. How the reference was applied
 
@@ -85,3 +100,23 @@ The landing page was requested separately with its own brief: *"Modern healthcar
 **Navigation.** Logged-out visitors see *Log in* and *Get started* (to `/login` and `/register`). Logged-in visitors see *Open dashboard*; `/login` and `/register` already redirect them to `/dashboard`. On screens under 768px the Features and How it works anchors are hidden from the top bar (the sections are directly below, and the footer links to both), which avoids adding a menu component. The wordmark on the login and register pages now links back to `/`.
 
 **Brand mark.** A simple green drop with a hairline "reading line" (inline SVG, `components/Logo.jsx`). It is deliberately abstract and avoids medical symbols.
+
+## 6. Landing-page motion
+
+Animations use **Motion for React** (`motion`, formerly Framer Motion) on the landing page only. The signed-in app is not animated beyond its existing fades.
+
+**Principles.** One easing curve for everything (`[0.22, 1, 0.36, 1]`: quick start, gentle settle, no bounce), durations around 0.6s, movement of at most 16–24px, and only `opacity` and `transform` (GPU-composited, never layout properties). Timings live in `components/landing/motion.js`.
+
+| Where | What |
+|---|---|
+| Hero | Badge, the two headline sentences, the description, the buttons and the note fade up in a 80ms stagger on load (all done within about 0.8s, so content is never held back). The dashboard preview slides in from the right. |
+| Floating decoration | Two soft green squares behind the preview drift up to 10px on 9–11s loops. Desktop only (`lg` and up), transform-only. These are the only continuous animations. |
+| Dashboard preview | Stat cards appear in sequence; numbers count up from 0 once visible. The final value is rendered invisibly to reserve its width, so counting causes no layout shift, and a tiny `requestAnimationFrame` tween writes the text without React re-renders. |
+| Features | The heading fades up when scrolled into view. Each card reveals on its own trigger and cascades across a desktop row. A single trigger for the whole list left the tall, stacked mobile list blank until most of it was on screen, so it was replaced. |
+| How it works | The three steps reveal in order (180ms apart) and each step's top rule draws from left to right. |
+| Micro-interactions | CSS only: buttons press to 98% scale on tap and the arrow nudges right on hover; feature cards tint and their icon tile fills with green on hover; nav links get a hairline underline that grows from the left. |
+
+**Accessibility and performance**
+- **Reduced motion:** with `prefers-reduced-motion: reduce`, `MotionConfig reducedMotion="user"` drops all movement, so content only fades in place. The floating shapes stay still, the count-up shows final values immediately, and the CSS hover and tap effects are `motion-safe:` only. This was verified in headless Chrome with `--force-prefers-reduced-motion`: no transforms were applied at any point.
+- **Bundle:** `LazyMotion` with the `domAnimation` feature set and `m.*` components keep Motion small. The landing page is loaded as its own chunk (`React.lazy`), so signed-in app pages never download Motion. The landing chunk is about 37 kB gzipped, and the main bundle got slightly smaller than before the landing page existed.
+- **Not built: the chart-line animation.** The brief asked for one in the dashboard preview, but the app has no chart (the Recharts chart is an unbuilt bonus feature). Showing an animated chart in a "preview of the existing application" would advertise a feature Sweety does not have, so it was left out.

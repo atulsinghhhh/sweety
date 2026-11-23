@@ -57,12 +57,13 @@ Built for the Kenpath **Junior Full Stack Developer – JavaScript & AI** techni
 - Login, Register, Dashboard, Readings and Reports pages; responsive down to 390px.
 - The selected date is kept in the URL (`?date=`) and carried across pages.
 - Loading skeletons, empty states, error states with retry, and success/error toasts.
+- Light and dark themes: follows the OS by default, with a toggle that remembers the choice.
 
 ## Technology stack
 
 | Layer | Technology |
 |---|---|
-| Frontend | React 19, Vite 8, JavaScript, Tailwind CSS v4, shadcn/ui (Radix), React Router 7, Axios |
+| Frontend | React 19, Vite 8, JavaScript, Tailwind CSS v4, shadcn/ui (Radix), React Router 7, Axios, Motion for React (landing page only) |
 | Backend | Node.js, Express 4, JavaScript, Prisma 7 (with the `@prisma/adapter-pg` driver adapter), PostgreSQL, bcrypt, jsonwebtoken, Zod 3 |
 | Testing | Jest, Supertest |
 | Package manager | npm |
@@ -286,7 +287,7 @@ sweety/
 ├── screenshots/
 ├── prd.md                      Assignment requirements
 ├── design.md                   Visual style reference
-├── DESIGN_DECISIONS.md         How the design was applied, and why it is light-only
+├── DESIGN_DECISIONS.md         How the design was applied: themes, landing page, motion
 └── .env.example
 ```
 
@@ -310,12 +311,15 @@ sweety/
 | **Login**<br>![Login](screenshots/01-login.jpg) | **Dashboard**<br>![Dashboard](screenshots/02-dashboard.jpg) |
 | **Reading management**<br>![Readings](screenshots/03-readings.jpg) | **Validation**<br>![Validation](screenshots/04-validation.jpg) |
 | **Daily report**<br>![Daily report](screenshots/05-reports-daily.jpg) | **Month-to-date and previous month**<br>![Monthly reports](screenshots/06-reports-monthly.jpg) |
+| **Dark theme**<br>![Dashboard in dark theme](screenshots/07-dashboard-dark.jpg) | |
 
 ## Design
 
 The interface follows the light, industrial style reference in [design.md](design.md): a `#f6f8f7` canvas, black ink, `#0f0e12` carbon bands, hairline rules, square corners, no shadows or gradients, and thin Inter type.
 
-**This differs from the PRD**, which asked for a dark primary theme. The project owner supplied the light style reference during development and asked for it to be used. Some accessibility adjustments were made (darker muted text, heavier body weight), and the app is deliberately light-only. The full reasoning is in [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md).
+**Light and dark themes.** The theme follows the operating system until the user picks one with the sun/moon toggle (in the app header, landing nav and login/register pages); the choice is remembered. Both palettes are verified against WCAG AA. The PRD originally asked for a dark primary theme, the owner later supplied a light style reference, and dark was then added back, so both are supported. Some accessibility adjustments were made (darker muted text, heavier body weight). The full reasoning is in [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md).
+
+**Landing-page motion.** Subtle entrance, scroll and hover animations built with Motion for React, disabled for users who prefer reduced motion. Motion is loaded only with the landing page's own code chunk.
 
 ## Assumptions
 
@@ -335,7 +339,7 @@ The interface follows the light, industrial style reference in [design.md](desig
 - **No token revocation or refresh.** Logout is client-side; tokens stay valid until they expire (7 days by default).
 - **No security headers middleware** (e.g. `helmet`). The API is JSON-only and disables `X-Powered-By`, but headers such as HSTS belong in production.
 - **No frontend automated tests** (optional bonus). The client was verified manually in Chrome.
-- **Single-bundle frontend** (~500 kB minified); route-level code splitting would reduce first load.
+- **Large main bundle** (~520 kB minified, 169 kB gzipped). The landing page is already a separate chunk; splitting the signed-in pages too would reduce first load further.
 - **Bonus features not implemented:** Docker Compose, full pagination UI, Recharts chart, React Testing Library tests, Redis caching, BullMQ reminders and the doctor role. `GET /api/readings` already supports `limit`, `from` and `to`, which a paginated view could build on.
 - **Prisma generator.** `prisma-client-js` is deprecated in Prisma 7 and planned for removal in a later major version. Migrating to the TypeScript-only `prisma-client` generator needs a TypeScript build step (or converting the server to TypeScript).
 - **Glucose targets.** Highlighting out-of-range values (e.g. below 70 or above 180 mg/dL) would be useful, but target ranges are personal and should be configurable per patient.
