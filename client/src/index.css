@@ -24,6 +24,12 @@
     /* State colors — the only chromatic notes, reserved for meaning */
     --color-warning: #f0a800;
     --color-link: #0071bb;
+    /* Soft green accent — used on the public landing page only.
+       leaf passes WCAG AA on white (5.3:1) and on mint (4.8:1);
+       mint-line is decorative (borders, never text). */
+    --color-leaf: #1f7a4d;
+    --color-mint: #eaf6ef;
+    --color-mint-line: #cfe9da;
 
     /* Type scale */
     --text-caption: 13px;
@@ -130,6 +136,11 @@
   html {
     @apply font-sans;
     color-scheme: light;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   body {
     @apply bg-background text-foreground text-body font-light antialiased;

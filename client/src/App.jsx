@@ -1,9 +1,10 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Toaster } from '@/components/ui/sonner'
 import AppLayout from '@/components/AppLayout'
 import { ProtectedRoute, PublicOnlyRoute } from '@/components/RouteGuards'
 import { AuthProvider } from '@/context/AuthContext'
 import DashboardPage from '@/pages/DashboardPage'
+import LandingPage from '@/pages/LandingPage'
 import LoginPage from '@/pages/LoginPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import ReadingsPage from '@/pages/ReadingsPage'
@@ -26,7 +27,8 @@ export default function App() {
               <Route path="/reports" element={<ReportsPage />} />
             </Route>
           </Route>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          {/* Public marketing page — visible to everyone, signed in or not */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Toaster position="top-right" />
