@@ -1,0 +1,41 @@
+-- CreateEnum
+CREATE TYPE "ReadingSlot" AS ENUM ('MORNING', 'AFTER_BREAKFAST', 'AFTER_LUNCH', 'AFTER_DINNER');
+
+-- CreateTable
+CREATE TABLE "users" (
+    "id" UUID NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "readings" (
+    "id" UUID NOT NULL,
+    "user_id" UUID NOT NULL,
+    "reading_date" DATE NOT NULL,
+    "slot" "ReadingSlot" NOT NULL,
+    "value" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "readings_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE INDEX "readings_user_id_reading_date_idx" ON "readings"("user_id", "reading_date");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "readings_user_id_reading_date_slot_key" ON "readings"("user_id", "reading_date", "slot");
+
+-- AddForeignKey
+ALTER TABLE "readings" ADD CONSTRAINT "readings_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Glucose value range enforced at the database level (Prisma has no CHECK support in schema)
+ALTER TABLE "readings" ADD CONSTRAINT "readings_value_range_check" CHECK ("value" BETWEEN 40 AND 600);
