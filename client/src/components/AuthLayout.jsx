@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function AuthLayout({ title, description, children }) {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <section className="flex flex-col justify-between gap-33 bg-carbon px-6 py-33 text-canvas sm:px-66 sm:py-66">
-        <Link to="/" className="self-start text-heading-sm lowercase text-canvas hover:no-underline">
+      <section className="flex flex-col justify-between gap-33 bg-carbon px-6 py-33 text-on-carbon sm:px-66 sm:py-66">
+        <Link to="/" className="self-start text-heading-sm lowercase text-on-carbon hover:no-underline">
           sweety
         </Link>
         <div className="max-w-md">
@@ -16,7 +17,8 @@ export default function AuthLayout({ title, description, children }) {
         <span className="hidden text-caption text-graphite lg:block">blood glucose tracker</span>
       </section>
 
-      <section className="flex items-center px-6 py-33 sm:px-66">
+      <section className="relative flex items-center px-6 py-33 sm:px-66">
+        <ThemeToggle className="absolute top-4 right-4" />
         <div className="w-full max-w-sm animate-in fade-in duration-300">
           <h1 className="text-heading">{title}</h1>
           {description && <p className="mt-2 text-body text-muted-foreground">{description}</p>}

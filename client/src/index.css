@@ -3,34 +3,38 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
-/* Light-only app: dark: utilities apply only under a .dark class (never set),
-   not the OS colour-scheme preference. */
+/* Dark mode is class-based: ThemeProvider (and the inline script in
+   index.html) put .dark on <html> from the saved choice or the OS setting. */
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Sweety design system — industrial catalogue style (see design.md).
- * Light canvas, hairline rules, zero radius, zero shadows, thin type.
- * Deviations for accessibility: muted text uses #5c5c5c (not #b2b2b2) to pass
- * WCAG AA, and body copy uses weight 300 instead of 100.
+ * Sweety design system — industrial catalogue style (see design.md and
+ * DESIGN_DECISIONS.md). Hairline rules, zero radius, zero shadows, thin type.
+ * Every colour is a CSS variable with a light (:root) and dark (.dark) value.
+ * Accessibility: muted text is #5c5c5c light / #a9a8b0 dark (AA on every
+ * surface), and body copy uses weight 300 instead of 100.
  */
 
-@theme {
-    /* Palette */
-    --color-canvas: #f6f8f7;
-    --color-ink: #000000;
-    --color-carbon: #0f0e12;
-    --color-steel: #e5e5e5;
-    --color-graphite: #b2b2b2;
-    /* State colors — the only chromatic notes, reserved for meaning */
-    --color-warning: #f0a800;
-    --color-link: #0071bb;
-    /* Soft green accent — used on the public landing page only.
-       leaf passes WCAG AA on white (5.3:1) and on mint (4.8:1);
-       mint-line is decorative (borders, never text). */
-    --color-leaf: #1f7a4d;
-    --color-mint: #eaf6ef;
-    --color-mint-line: #cfe9da;
+@theme inline {
+    /* Palette (theme-aware) */
+    --color-canvas: var(--canvas);
+    --color-ink: var(--ink);
+    --color-carbon: var(--carbon);
+    --color-on-carbon: var(--on-carbon);
+    --color-steel: var(--steel);
+    --color-graphite: var(--graphite);
+    --color-surface: var(--surface);
+    /* State colours — the only chromatic notes, reserved for meaning */
+    --color-warning: var(--warning);
+    --color-link: var(--link);
+    /* Soft green accent — landing page and logo. leaf is AA on every
+       background it is used on; mint-line is decorative (never text). */
+    --color-leaf: var(--leaf);
+    --color-mint: var(--mint);
+    --color-mint-line: var(--mint-line);
+}
 
+@theme {
     /* Type scale */
     --text-caption: 13px;
     --text-caption--line-height: 1.5;
@@ -104,6 +108,21 @@
 :root {
     --radius: 0px;
 
+    /* Palette */
+    --canvas: #f6f8f7;
+    --surface: #ffffff;
+    --ink: #000000;
+    --carbon: #0f0e12;
+    --on-carbon: #f6f8f7;
+    --steel: #e5e5e5;
+    --graphite: #b2b2b2;
+    --warning: #f0a800;
+    --link: #0071bb;
+    --leaf: #1f7a4d;
+    --mint: #eaf6ef;
+    --mint-line: #cfe9da;
+
+    /* shadcn semantic tokens */
     --background: #f6f8f7;
     --foreground: #000000;
     --card: #ffffff;
@@ -129,6 +148,47 @@
     --chart-5: #0f0e12;
 }
 
+/* Dark theme: the carbon near-black becomes the canvas; carbon bands lift
+   slightly so they stay distinct. All text pairs verified ≥ 4.5:1 and
+   control borders ≥ 3:1 (see DESIGN_DECISIONS.md). */
+.dark {
+    --canvas: #16151a;
+    --surface: #0f0e12;
+    --ink: #f6f8f7;
+    --carbon: #1b1a21;
+    --on-carbon: #f6f8f7;
+    --steel: #2b2a31;
+    --graphite: #b2b2b2;
+    --link: #6cb6ff;
+    --leaf: #5fcf95;
+    --mint: #11261a;
+    --mint-line: #1e4630;
+
+    --background: #0f0e12;
+    --foreground: #f6f8f7;
+    --card: #16151a;
+    --card-foreground: #f6f8f7;
+    --popover: #1b1a21;
+    --popover-foreground: #f6f8f7;
+    --primary: #f6f8f7;
+    --primary-foreground: #0f0e12;
+    --secondary: #16151a;
+    --secondary-foreground: #f6f8f7;
+    --muted: #24232a;
+    --muted-foreground: #a9a8b0;
+    --accent: #24232a;
+    --accent-foreground: #f6f8f7;
+    --destructive: #ff7a8a;
+    --border: #2b2a31;
+    --input: #6e6d75;
+    --ring: #f6f8f7;
+    --chart-1: #f6f8f7;
+    --chart-2: #a9a8b0;
+    --chart-3: #6e6d75;
+    --chart-4: #f0a800;
+    --chart-5: #5fcf95;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -136,6 +196,9 @@
   html {
     @apply font-sans;
     color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
   }
   @media (prefers-reduced-motion: no-preference) {
     html {

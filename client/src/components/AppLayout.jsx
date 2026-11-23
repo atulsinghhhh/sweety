@@ -1,5 +1,6 @@
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import ThemeToggle from '@/components/ThemeToggle'
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
 
@@ -26,6 +27,7 @@ export default function AppLayout() {
 
           <div className="flex items-center gap-4 sm:order-last">
             <span className="hidden text-caption text-muted-foreground md:inline">{user?.email}</span>
+            <ThemeToggle />
             <Button variant="outline" size="sm" onClick={logout}>
               Log out
             </Button>
@@ -56,7 +58,7 @@ export default function AppLayout() {
         </div>
       </main>
 
-      <footer className="bg-carbon text-canvas">
+      <footer className="bg-carbon text-on-carbon">
         <div className="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-2 px-4 py-33 text-caption sm:px-6">
           <span>sweety — blood glucose tracker</span>
           <span className="text-graphite">readings are for personal tracking, not medical advice</span>

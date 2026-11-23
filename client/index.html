@@ -4,12 +4,21 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <meta
       name="description"
       content="Sweety is a simple personal tracker for recording blood glucose readings and reviewing daily and monthly reports."
     />
     <title>Sweety – Blood Glucose Tracker</title>
+    <script>
+      // Apply the saved theme (or the OS preference) before first paint.
+      // Mirrors src/context/ThemeContext.jsx.
+      try {
+        var saved = localStorage.getItem('sweety_theme')
+        var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (dark) document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
