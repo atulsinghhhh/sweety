@@ -32,3 +32,23 @@ npm run dev                   # http://localhost:5173
 ```
 
 Run backend tests with `cd server && npm test`.
+
+## API
+
+All endpoints are under `/api`. Everything except register/login requires `Authorization: Bearer <token>`.
+Errors always have the shape `{ "error": { "message": "...", "field": "..." } }`.
+
+| Method | Path | Description |
+|---|---|---|
+| POST | `/auth/register` | `{ name, email, password }` → `{ user, token }` |
+| POST | `/auth/login` | `{ email, password }` → `{ user, token }` |
+| GET | `/auth/me` | Current user |
+| POST | `/readings` | `{ readingDate: "YYYY-MM-DD", slot, value }` |
+| GET | `/readings` | Own readings; optional `?date=`, `?from=&to=`, `?limit=` (1–100) |
+| GET / PUT / DELETE | `/readings/:id` | Single reading (404 if it belongs to someone else) |
+| GET | `/reports/daily?date=` | Stats + readings for one day |
+| GET | `/reports/month-to-date?date=` | 1st of the month → selected date |
+| GET | `/reports/monthly?date=` | Entire calendar month before the selected date |
+
+Slots: `MORNING`, `AFTER_BREAKFAST`, `AFTER_LUNCH`, `AFTER_DINNER`. Report `date` defaults to today in `APP_TIMEZONE`.
+Empty periods return `count: 0` with `highest`, `lowest` and `average` as `null`.

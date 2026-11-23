@@ -18,4 +18,5 @@ module.exports = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
   appTimezone: process.env.APP_TIMEZONE || 'Asia/Kolkata',
+  bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) || 12,
 };
