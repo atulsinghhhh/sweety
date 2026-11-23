@@ -62,3 +62,26 @@ Sweety is a health app used to read and enter medical numbers, so readability ta
 - **States everywhere:** skeleton placeholders while loading, friendly empty states instead of `0`/`NaN` statistics, and error states with a retry button.
 - **Animation is limited** to a 300ms fade-in on page content and the dialog transitions shadcn provides, matching the PRD's "subtle animations".
 - **Responsive:** verified without horizontal scroll at 390px (Dashboard, Readings, Reports). The navigation wraps under the wordmark on small screens.
+
+## 5. Public landing page (`/`)
+
+The landing page was requested separately with its own brief: *"Modern healthcare SaaS. Light theme. White background. Soft green accent colors. Dark readable typography… Clean cards and subtle borders."* That brief is followed on the landing page only; the signed-in app is unchanged.
+
+| Landing brief | Implementation |
+|---|---|
+| White background | The page uses `#ffffff`; the "How it works" band uses the app's `#f6f8f7` canvas for rhythm |
+| Soft green accent | New tokens `leaf #1f7a4d` (icons, eyebrow labels, step numbers; 5.3:1 on white and 4.8:1 on mint, so it passes AA), `mint #eaf6ef` (soft backgrounds) and `mint-line #cfe9da` (decorative borders only). Used only on the landing page and the logo mark |
+| Clean cards, subtle borders | Feature cards on a 1px `steel` hairline grid |
+| Dark readable typography | Black ink on white, Inter at weight 300, muted text `#5c5c5c` (6.7:1 on white) |
+| Smooth, subtle animations | A one-time fade-up when sections scroll into view (`IntersectionObserver` and existing `tw-animate-css` utilities, no new dependency) and smooth anchor scrolling. Both are disabled when the user prefers reduced motion |
+| Use existing components | `Button`, `StatGrid` and `ReadingSlots` are reused |
+
+**Kept from the app's design system for consistency:** square corners, no shadows, no gradients, Inter, the type scale and the black primary buttons. Moving from the landing page into the app therefore feels like the same product. The green accent is the one deliberate addition. It departs from `design.md`'s "never introduce a sixth color" rule because the landing brief explicitly asked for it.
+
+**Dashboard preview.** The hero shows the real `StatGrid` and `ReadingSlots` components with four invented sample readings (98, 142, 156, 131; the statistics are computed from them). It is captioned "Illustrative preview · sample values" and exposed to screen readers as one labelled image, so the sample numbers are never presented as a real person's data.
+
+**Content rules.** No medical claims: the copy describes recording and reviewing readings only, and the footer carries a disclaimer that Sweety does not diagnose, treat or give medical advice. No invented facts such as pricing or user counts. No privacy or contact links, because those pages do not exist and placeholder links would be fake functionality.
+
+**Navigation.** Logged-out visitors see *Log in* and *Get started* (to `/login` and `/register`). Logged-in visitors see *Open dashboard*; `/login` and `/register` already redirect them to `/dashboard`. On screens under 768px the Features and How it works anchors are hidden from the top bar (the sections are directly below, and the footer links to both), which avoids adding a menu component. The wordmark on the login and register pages now links back to `/`.
+
+**Brand mark.** A simple green drop with a hairline "reading line" (inline SVG, `components/Logo.jsx`). It is deliberately abstract and avoids medical symbols.

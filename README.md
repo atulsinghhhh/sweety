@@ -53,6 +53,7 @@ Built for the Kenpath **Junior Full Stack Developer – JavaScript & AI** techni
 - Empty periods return `count: 0` with `null` statistics, shown in the UI as a friendly empty state.
 
 **Frontend**
+- Public landing page at `/` (features, how it works, calls to action) that leads to registration and login.
 - Login, Register, Dashboard, Readings and Reports pages; responsive down to 390px.
 - The selected date is kept in the URL (`?date=`) and carried across pages.
 - Loading skeletons, empty states, error states with retry, and success/error toasts.
@@ -173,6 +174,12 @@ npm run dev
 
 Open **http://localhost:5173** and log in with the demo account, or register a new one.
 
+| Route | Access | Page |
+|---|---|---|
+| `/` | Public (signed in or not) | Landing page |
+| `/login`, `/register` | Signed out only; signed-in users are sent to `/dashboard` | Authentication |
+| `/dashboard`, `/readings`, `/reports` | Signed in only; others are sent to `/login` | Application |
+
 Production build of the client:
 
 ```bash
@@ -257,12 +264,13 @@ Example report response:
 sweety/
 ├── client/                     React frontend (Vite)
 │   └── src/
-│       ├── components/         Layout, route guards, forms, dialogs, stat grid
+│       ├── components/         Layout, route guards, forms, dialogs, stat grid, logo
+│       │   ├── landing/        Landing-page dashboard preview and scroll reveal
 │       │   └── ui/             shadcn/ui components
 │       ├── context/            AuthContext (session state)
 │       ├── hooks/              useAuth, useAsync, useDateParam
 │       ├── lib/                API client, date helpers, validation rules
-│       └── pages/              Login, Register, Dashboard, Readings, Reports
+│       └── pages/              Landing, Login, Register, Dashboard, Readings, Reports
 ├── server/                     Express backend
 │   ├── prisma/                 schema.prisma, migrations, seed.js
 │   ├── prisma.config.js        Prisma 7 config: schema, migrations, seed, database URL
@@ -292,6 +300,10 @@ sweety/
 - **Prisma 7 in plain JavaScript.** The client connects through the `@prisma/adapter-pg` driver adapter (required in Prisma 7, with Prisma 6's 5-second connect timeout kept). The database URL, migrations path and seed command live in `server/prisma.config.js`, which loads `.env` or `.env.test` itself because Prisma 7 no longer reads env files. The schema uses the `prisma-client-js` generator: Prisma 7's newer `prisma-client` generator emits TypeScript only and would need a compile step in this CommonJS JavaScript server. It is still supported in Prisma 7 but deprecated, so moving to the new generator (with a TypeScript build) is listed under future improvements.
 
 ## Screenshots
+
+**Landing page**
+
+![Landing page](screenshots/00-landing.jpg)
 
 | | |
 |---|---|
