@@ -17,6 +17,10 @@ function errorHandler(err, req, res, next) {
     return res.status(400).json({ error: { message: 'Invalid JSON body' } });
   }
 
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({ error: { message: 'Request body is too large.' } });
+  }
+
   // Never leak database or stack details to the client
   if (nodeEnv !== 'test') console.error(err);
   return res.status(500).json({ error: { message: 'Something went wrong. Please try again.' } });

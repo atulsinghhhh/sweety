@@ -7,10 +7,14 @@ function fail(ctx, message) {
   return z.NEVER;
 }
 
+// Plain decimal notation only — Number() would otherwise accept "0x64" or "1e2"
+const NUMERIC_STRING = /^-?\d+(\.\d+)?$/;
+
 const isBlank = (raw) => raw === undefined || raw === null || (typeof raw === 'string' && raw.trim() === '');
 
 const glucoseValue = z.unknown().transform((raw, ctx) => {
   if (isBlank(raw)) return fail(ctx, MESSAGES.valueRequired);
+  if (typeof raw === 'string' && !NUMERIC_STRING.test(raw.trim())) return fail(ctx, MESSAGES.valueInvalid);
   const value = typeof raw === 'string' ? Number(raw.trim()) : raw;
   if (typeof value !== 'number' || !Number.isFinite(value)) return fail(ctx, MESSAGES.valueInvalid);
   if (!Number.isInteger(value)) return fail(ctx, MESSAGES.valueWhole);
