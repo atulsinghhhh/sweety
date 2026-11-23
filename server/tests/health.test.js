@@ -19,7 +19,9 @@ describe('foundation', () => {
 
   it('connects to the test database with the schema applied', async () => {
     const rows = await prisma.$queryRaw`SELECT current_database() AS db`;
-    expect(rows[0].db).toBe('sweety_test');
+    expect(rows[0].db).toBe(new URL(process.env.DATABASE_URL).pathname.slice(1));
+    // The suite wipes this database — refuse to run against one not named as a test DB
+    expect(rows[0].db).toMatch(/test/i);
     await expect(prisma.reading.count()).resolves.toBe(0);
   });
 });
