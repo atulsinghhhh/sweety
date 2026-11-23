@@ -1,8 +1,12 @@
+import { m } from 'motion/react'
 import ReadingSlots from '@/components/ReadingSlots'
-import StatGrid from '@/components/StatGrid'
+import { CELL, GRID, STATS } from '@/components/StatGrid'
+import { cn } from '@/lib/utils'
+import CountUp from './CountUp'
+import { fadeUp, stagger } from './motion'
 
 // Static, clearly labelled illustration built from the real dashboard
-// components. Values are invented samples, never a real user's data.
+// components and styles. Values are invented samples, never a real user's data.
 const SAMPLE_READINGS = [
   { id: 'sample-morning', slot: 'MORNING', value: 98 },
   { id: 'sample-breakfast', slot: 'AFTER_BREAKFAST', value: 142 },
@@ -24,7 +28,7 @@ export default function DashboardPreview() {
       <div
         role="img"
         aria-label="Illustrative preview of the Sweety dashboard, showing a day's summary statistics and four reading slots with sample values."
-        className="border border-steel bg-white"
+        className="border border-steel bg-surface"
       >
         <div aria-hidden="true">
           <div className="flex items-center justify-between border-b border-steel bg-canvas px-15 py-2.5">
@@ -37,12 +41,25 @@ export default function DashboardPreview() {
             <span className="w-8" />
           </div>
 
-          {/* Preview is narrower than the real page: keep the stat grid at 2 columns */}
-          <div className="p-15 sm:p-22 [&_dd]:text-[26px] sm:[&_dd]:text-[32px] [&_dl]:grid-cols-2 [&_dl>div]:bg-white">
+          <div className="p-15 sm:p-22">
             <p className="text-caption text-muted-foreground">day summary</p>
-            <div className="mt-2">
-              <StatGrid stats={SAMPLE_STATS} />
-            </div>
+            {/* Preview is narrower than the real page: keep the stat grid at 2 columns */}
+            <m.dl
+              variants={stagger(0.45, 0.1)}
+              initial="hidden"
+              animate="visible"
+              className={cn(GRID, 'mt-2 grid-cols-2 lg:grid-cols-2')}
+            >
+              {STATS.map((stat, index) => (
+                <m.div key={stat.key} variants={fadeUp} className={cn(CELL, 'bg-surface')}>
+                  <dt className="text-caption text-muted-foreground">{stat.label}</dt>
+                  <dd className="mt-1 text-[26px] leading-[1.11] font-thin sm:text-[32px]">
+                    <CountUp value={SAMPLE_STATS[stat.key]} decimals={stat.key === 'average' ? 1 : 0} delay={0.5 + index * 0.1} />
+                    {stat.unit && <span className="ml-1.5 text-caption font-light text-muted-foreground">{stat.unit}</span>}
+                  </dd>
+                </m.div>
+              ))}
+            </m.dl>
             <p className="mt-22 text-caption text-muted-foreground">readings</p>
             <div className="mt-2 [&_li]:py-2.5">
               <ReadingSlots readings={SAMPLE_READINGS} />
