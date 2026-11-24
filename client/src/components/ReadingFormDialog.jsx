@@ -15,6 +15,12 @@ import api, { getErrorField, getErrorMessage } from '@/lib/api'
 import { isValidDateString, todayLocal } from '@/lib/dates'
 import { SLOTS, validateReadingForm } from '@/lib/readings'
 import FormField from './FormField'
+import { SLOT_META } from './slotMeta'
+
+function SlotIcon({ slot }) {
+  const Icon = SLOT_META[slot].icon
+  return <Icon strokeWidth={1.5} className="text-seal-ink" aria-hidden="true" />
+}
 
 function initialForm(reading, defaults) {
   if (reading) return { readingDate: reading.readingDate, slot: reading.slot, value: String(reading.value) }
@@ -94,12 +100,13 @@ export default function ReadingFormDialog({ open, onOpenChange, reading, default
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-subheading">{isEdit ? 'Edit reading' : 'Add reading'}</DialogTitle>
+          <p className="eyebrow text-seal-ink">{isEdit ? 'Edit' : 'New entry'}</p>
+          <DialogTitle>{isEdit ? 'Edit reading' : 'Add reading'}</DialogTitle>
           <DialogDescription>Up to four readings a day — one per time slot.</DialogDescription>
         </DialogHeader>
 
-        <form id="reading-form" onSubmit={handleSubmit} noValidate className="flex flex-col gap-22">
-          <FormField id="reading-date" label="date" error={errors.readingDate}>
+        <form id="reading-form" onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+          <FormField id="reading-date" label="Date" error={errors.readingDate}>
             {(aria) => (
               <Input
                 {...aria}
@@ -113,7 +120,7 @@ export default function ReadingFormDialog({ open, onOpenChange, reading, default
 
           <FormField
             id="reading-slot"
-            label="time slot"
+            label="Time slot"
             error={errors.slot}
             hint={dayFull && !errors.readingDate ? 'All four slots are filled for this date.' : undefined}
           >
@@ -127,6 +134,7 @@ export default function ReadingFormDialog({ open, onOpenChange, reading, default
                     const taken = otherSlots.includes(slot.value)
                     return (
                       <SelectItem key={slot.value} value={slot.value} disabled={taken}>
+                        <SlotIcon slot={slot.value} />
                         {slot.label}
                         {taken && <span className="text-muted-foreground"> — recorded</span>}
                       </SelectItem>
@@ -137,13 +145,14 @@ export default function ReadingFormDialog({ open, onOpenChange, reading, default
             )}
           </FormField>
 
-          <FormField id="reading-value" label="glucose (mg/dL)" error={errors.value} hint="Whole number from 40 to 600.">
+          <FormField id="reading-value" label="Glucose (mg/dL)" error={errors.value} hint="Whole number from 40 to 600.">
             {(aria) => (
               <Input
                 {...aria}
                 inputMode="numeric"
                 autoComplete="off"
                 placeholder="e.g. 110"
+                className="h-14 font-display text-[26px] tabular-nums md:text-[26px]"
                 value={form.value}
                 onChange={(e) => update('value')(e.target.value)}
               />
@@ -152,7 +161,7 @@ export default function ReadingFormDialog({ open, onOpenChange, reading, default
         </form>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={submitting}>
+          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
             Cancel
           </Button>
           <Button type="submit" form="reading-form" disabled={submitting}>

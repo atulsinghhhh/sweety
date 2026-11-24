@@ -10,7 +10,7 @@ export default function ThemeToggle({ className }) {
 
   return (
     <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={label} title={label} className={cn(className)}>
-      {isDark ? <Sun strokeWidth={1.25} /> : <Moon strokeWidth={1.25} />}
+      {isDark ? <Sun strokeWidth={1.5} /> : <Moon strokeWidth={1.5} />}
     </Button>
   )
 }

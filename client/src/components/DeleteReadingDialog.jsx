@@ -35,14 +35,14 @@ export default function DeleteReadingDialog({ reading, onOpenChange, onDeleted }
     <AlertDialog open={Boolean(reading)} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-subheading">Delete this reading?</AlertDialogTitle>
+          <AlertDialogTitle>Delete this reading?</AlertDialogTitle>
           <AlertDialogDescription>
             {reading &&
               `${reading.slotLabel} · ${reading.value} mg/dL on ${formatDate(reading.readingDate)}. This can't be undone.`}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel variant="ghost" disabled={deleting}>Cancel</AlertDialogCancel>
           <AlertDialogAction variant="destructive" onClick={handleDelete} disabled={deleting}>
             {deleting ? 'Deleting…' : 'Delete'}
           </AlertDialogAction>

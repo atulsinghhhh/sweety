@@ -1,65 +1,113 @@
-import { Pencil, Plus, Trash2 } from 'lucide-react'
+import { Check, Pencil, Plus, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SLOTS } from '@/lib/readings'
+import { cn } from '@/lib/utils'
+import { SLOT_META } from './slotMeta'
 
-export function ReadingSlotsSkeleton() {
+const GRID = 'grid gap-3 sm:grid-cols-2 sm:gap-4'
+
+export function ReadingSlotsSkeleton({ columns = 'xl:grid-cols-4' }) {
   return (
-    <ul className="border-t border-ink">
+    <ul className={cn(GRID, columns)}>
       {SLOTS.map((slot) => (
-        <li key={slot.value} className="flex items-center justify-between border-b border-steel py-15">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-6 w-16" />
+        <li key={slot.value} className="flex min-h-52 flex-col justify-between rounded-3xl bg-paper p-5">
+          <Skeleton className="size-10 rounded-full bg-paper-deep" />
+          <Skeleton className="h-10 w-24 bg-paper-deep" />
         </li>
       ))}
     </ul>
   )
 }
 
-// One row per slot, in day order. Without handlers it renders read-only.
-export default function ReadingSlots({ readings, onAdd, onEdit, onDelete }) {
+/**
+ * One card per slot, in day order. Without handlers it renders read-only.
+ * `activeSlot` highlights the slot currently open in the add/edit dialog.
+ */
+export default function ReadingSlots({ readings, onAdd, onEdit, onDelete, activeSlot, columns = 'xl:grid-cols-4', className }) {
   const bySlot = Object.fromEntries(readings.map((reading) => [reading.slot, reading]))
   const editable = Boolean(onAdd || onEdit || onDelete)
 
   return (
-    <ul className="border-t border-ink">
-      {SLOTS.map((slot) => {
+    <ul className={cn(GRID, columns, className)}>
+      {SLOTS.map((slot, index) => {
         const reading = bySlot[slot.value]
+        const { icon: Icon, hint } = SLOT_META[slot.value]
+        const active = activeSlot === slot.value
         return (
           <li
             key={slot.value}
-            className="grid grid-cols-[1fr_auto] items-center gap-x-15 border-b border-steel py-15 sm:grid-cols-[1fr_auto_auto]"
-          >
-            <span className="text-body">{slot.label}</span>
-
-            {reading ? (
-              <span className="text-heading-sm font-light tabular-nums">
-                {reading.value}
-                <span className="ml-1.5 text-caption font-light text-muted-foreground">mg/dL</span>
-              </span>
-            ) : (
-              <span className="text-caption text-muted-foreground">no reading</span>
+            style={{ '--delay': `${index * 60}ms` }}
+            className={cn(
+              'animate-rise relative flex flex-col gap-5 rounded-3xl p-5 transition-[background-color,box-shadow] duration-300',
+              reading ? 'bg-paper' : 'border border-dashed border-taupe',
+              active && 'bg-card shadow-glow ring-2 ring-seal',
             )}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'inline-flex size-10 shrink-0 items-center justify-center rounded-full',
+                  reading ? 'bg-background text-seal-ink' : 'bg-paper text-muted-foreground',
+                )}
+              >
+                <Icon strokeWidth={1.5} className="size-5" />
+              </span>
+              {active ? (
+                <span className="rounded-full bg-seal px-2.5 py-1 text-[12px] font-semibold text-on-seal">Editing</span>
+              ) : reading ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-seal-soft px-2.5 py-1 text-[12px] font-semibold text-seal-ink">
+                  <Check strokeWidth={2.25} className="size-3" aria-hidden="true" /> Recorded
+                </span>
+              ) : (
+                <span className="rounded-full bg-paper px-2.5 py-1 text-[12px] font-semibold text-muted-foreground">
+                  Not recorded
+                </span>
+              )}
+            </div>
+
+            <div>
+              <p className="font-semibold">{slot.label}</p>
+              <p className="text-[13px] text-muted-foreground">{hint}</p>
+            </div>
+
+            <p className="flex items-baseline gap-1.5">
+              {reading ? (
+                <>
+                  <span className="font-display text-heading-lg leading-none tabular-nums">{reading.value}</span>
+                  <span className="text-[13px] text-muted-foreground">mg/dL</span>
+                </>
+              ) : (
+                <>
+                  <span aria-hidden="true" className="font-display text-heading-lg leading-none text-taupe">
+                    —
+                  </span>
+                  <span className="sr-only">No reading</span>
+                </>
+              )}
+            </p>
 
             {editable && (
-              <div className="col-span-2 flex justify-end gap-1 sm:col-span-1 sm:w-48">
+              <div className="mt-auto flex flex-wrap gap-2">
                 {reading ? (
                   <>
-                    <Button variant="ghost" size="sm" onClick={() => onEdit(reading)} aria-label={`Edit ${slot.label} reading`}>
-                      <Pencil strokeWidth={1.25} /> Edit
+                    <Button variant="secondary" size="sm" className="bg-background hover:bg-paper-deep" onClick={() => onEdit(reading)} aria-label={`Edit ${slot.label} reading`}>
+                      <Pencil strokeWidth={1.75} /> Edit
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                       onClick={() => onDelete(reading)}
                       aria-label={`Delete ${slot.label} reading`}
                     >
-                      <Trash2 strokeWidth={1.25} /> Delete
+                      <Trash2 strokeWidth={1.75} /> Delete
                     </Button>
                   </>
                 ) : (
-                  <Button variant="ghost" size="sm" onClick={() => onAdd(slot.value)} aria-label={`Add ${slot.label} reading`}>
-                    <Plus strokeWidth={1.25} /> Add
+                  <Button variant="outline" size="sm" onClick={() => onAdd(slot.value)} aria-label={`Add ${slot.label} reading`}>
+                    <Plus strokeWidth={1.75} /> Add reading
                   </Button>
                 )}
               </div>

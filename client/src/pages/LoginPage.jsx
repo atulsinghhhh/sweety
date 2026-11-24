@@ -38,16 +38,16 @@ export default function LoginPage() {
 
   return (
     <AuthLayout title="Log in" description="Welcome back. Enter your details to continue.">
-      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-22">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
         {errors.form && (
-          <p role="alert" className="border-l-2 border-destructive pl-15 text-body text-destructive">
+          <p role="alert" className="rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-destructive">
             {errors.form}
           </p>
         )}
-        <FormField id="email" label="email" error={errors.email}>
+        <FormField id="email" label="Email" error={errors.email}>
           {(aria) => <Input {...aria} type="email" autoComplete="email" value={form.email} onChange={update('email')} />}
         </FormField>
-        <FormField id="password" label="password" error={errors.password}>
+        <FormField id="password" label="Password" error={errors.password}>
           {(aria) => (
             <Input
               {...aria}
@@ -58,12 +58,12 @@ export default function LoginPage() {
             />
           )}
         </FormField>
-        <Button type="submit" size="lg" disabled={submitting} className="w-full">
+        <Button type="submit" size="lg" disabled={submitting} className="mt-2 w-full">
           {submitting ? 'Logging in…' : 'Log in'}
         </Button>
       </form>
-      <p className="mt-22 text-body text-muted-foreground">
-        New to Sweety? <Link to="/register">Create an account</Link>
+      <p className="mt-8 text-muted-foreground">
+        New to Sweety? <Link to="/register" className="font-semibold">Create an account</Link>
       </p>
     </AuthLayout>
   )

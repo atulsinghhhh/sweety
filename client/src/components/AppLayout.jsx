@@ -1,71 +1,98 @@
 import { Suspense } from 'react'
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
+import { BarChart3, LayoutDashboard, ListChecks, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
-  { to: '/dashboard', label: 'dashboard' },
-  { to: '/readings', label: 'readings' },
-  { to: '/reports', label: 'reports' },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/readings', label: 'Readings', icon: ListChecks },
+  { to: '/reports', label: 'Reports', icon: BarChart3 },
 ]
+
+const initials = (name = '') =>
+  name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('')
 
 export default function AppLayout() {
   const { user, logout } = useAuth()
-  const { search } = useLocation()
+  const { pathname, search } = useLocation()
   // Carry the selected ?date= across pages
   const date = new URLSearchParams(search).get('date')
   const withDate = (path) => (date ? `${path}?date=${date}` : path)
 
+  const nav = (
+    <nav aria-label="Main" className="flex rounded-full border border-border bg-paper p-1">
+      {NAV_ITEMS.map((item) => (
+        <NavLink
+          key={item.to}
+          to={withDate(item.to)}
+          className={({ isActive }) =>
+            cn(
+              'inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 hover:no-underline',
+              isActive ? 'bg-background text-seal-ink shadow-glow' : 'text-muted-foreground hover:text-foreground',
+            )
+          }
+        >
+          <item.icon strokeWidth={1.75} className="size-4" aria-hidden="true" />
+          {item.label}
+        </NavLink>
+      ))}
+    </nav>
+  )
+
   return (
     <div className="flex min-h-svh flex-col">
-      <header className="border-b border-steel">
-        <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-x-33 gap-y-2 px-4 py-4 sm:h-66 sm:px-6 sm:py-0">
-          <Link to={withDate('/dashboard')} className="text-heading-sm text-foreground lowercase hover:no-underline">
-            sweety
+      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
+        <div className="mx-auto flex h-18 max-w-[1280px] items-center justify-between gap-6 px-4 sm:px-8">
+          <Link to={withDate('/dashboard')} aria-label="Sweety dashboard" className="hover:no-underline">
+            <Logo />
           </Link>
 
-          <div className="flex items-center gap-4 sm:order-last">
-            <span className="hidden text-caption text-muted-foreground md:inline">{user?.email}</span>
+          <div className="hidden md:block">{nav}</div>
+
+          <div className="flex items-center gap-1 sm:gap-2">
             <ThemeToggle />
-            <Button variant="outline" size="sm" onClick={logout}>
-              Log out
+            <div className="ml-1 hidden items-center gap-3 lg:flex">
+              <span
+                aria-hidden="true"
+                className="inline-flex size-9 items-center justify-center rounded-full bg-seal-soft text-[13px] font-semibold text-seal-ink"
+              >
+                {initials(user?.name)}
+              </span>
+              <div className="max-w-44 leading-tight">
+                <p className="truncate text-sm font-semibold">{user?.name}</p>
+                <p className="truncate text-[12px] text-muted-foreground">{user?.email}</p>
+              </div>
+            </div>
+            <Button variant="ghost" size="sm" onClick={logout} className="ml-1">
+              <LogOut strokeWidth={1.75} /> Log out
             </Button>
           </div>
-
-          <nav aria-label="Main" className="order-last flex w-full gap-22 sm:order-none sm:ml-auto sm:w-auto">
-            {NAV_ITEMS.map((item) => (
-              <NavLink
-                key={item.to}
-                to={withDate(item.to)}
-                className={({ isActive }) =>
-                  cn(
-                    'border-b py-1 text-body text-foreground hover:no-underline',
-                    isActive ? 'border-ink' : 'border-transparent text-muted-foreground hover:text-foreground',
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
         </div>
+        <div className="border-t border-border px-4 py-2 md:hidden">{nav}</div>
       </header>
 
-      <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-33 sm:px-6 sm:py-66">
-        <div className="animate-in fade-in duration-300">
-          {/* Keeps the header and nav on screen while the next page's chunk loads */}
+      <main className="mx-auto w-full max-w-[1280px] flex-1 px-4 py-10 sm:px-8 sm:py-14">
+        {/* Keyed by route so each page eases in; the header stays put while its chunk loads */}
+        <div key={pathname}>
           <Suspense fallback={null}>
             <Outlet />
           </Suspense>
         </div>
       </main>
 
-      <footer className="bg-carbon text-on-carbon">
-        <div className="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-2 px-4 py-33 text-caption sm:px-6">
-          <span>sweety — blood glucose tracker</span>
-          <span className="text-graphite">readings are for personal tracking, not medical advice</span>
+      <footer className="border-t border-border">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-3 px-4 py-8 text-[13px] text-muted-foreground sm:px-8">
+          <Logo className="text-[20px]" markClassName="size-5" />
+          <span>Readings are for personal tracking, not medical advice.</span>
         </div>
       </footer>
     </div>

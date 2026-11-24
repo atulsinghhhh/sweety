@@ -1,10 +1,11 @@
+import { Activity, ArrowDownRight, ArrowUpRight, Hash } from 'lucide-react'
+
+// Average leads: it is the number people check first
 export const STATS = [
-  { key: 'count', label: 'total readings', unit: null },
-  { key: 'highest', label: 'highest', unit: 'mg/dL' },
-  { key: 'lowest', label: 'lowest', unit: 'mg/dL' },
-  { key: 'average', label: 'average', unit: 'mg/dL' },
+  { key: 'average', label: 'Average', unit: 'mg/dL', icon: Activity, featured: true },
+  { key: 'highest', label: 'Highest', unit: 'mg/dL', icon: ArrowUpRight },
+  { key: 'lowest', label: 'Lowest', unit: 'mg/dL', icon: ArrowDownRight },
+  { key: 'count', label: 'Total readings', unit: null, icon: Hash },
 ]
 
-// A 1px gap over a hairline background draws the rules between cells at every breakpoint
-export const GRID = 'grid grid-cols-2 gap-px border-t border-b border-t-ink border-b-steel bg-steel lg:grid-cols-4'
-export const CELL = 'bg-background px-15 py-22 sm:px-22'
+export const GRID = 'grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4'

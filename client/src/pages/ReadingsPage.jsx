@@ -12,6 +12,25 @@ import { useDateParam } from '@/hooks/useDateParam'
 import api from '@/lib/api'
 import { formatDate } from '@/lib/dates'
 import { MAX_READINGS_PER_DAY } from '@/lib/readings'
+import { cn } from '@/lib/utils'
+
+function DayProgress({ count }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex gap-1" aria-hidden="true">
+        {Array.from({ length: MAX_READINGS_PER_DAY }, (_, i) => (
+          <span
+            key={i}
+            className={cn('h-1.5 w-7 rounded-full transition-colors duration-500', i < count ? 'bg-seal' : 'bg-paper-deep')}
+          />
+        ))}
+      </div>
+      <span className="text-[13px] font-semibold text-muted-foreground tabular-nums">
+        {count} of {MAX_READINGS_PER_DAY} readings
+      </span>
+    </div>
+  )
+}
 
 export default function ReadingsPage() {
   const [date, setDate] = useDateParam()
@@ -25,32 +44,39 @@ export default function ReadingsPage() {
   )
 
   const dayFull = readings?.length >= MAX_READINGS_PER_DAY
+  const activeSlot = formState?.mode === 'edit' ? formState.reading.slot : formState?.slot
 
   return (
     <>
       <PageHeader
-        title="Readings"
+        eyebrow="Readings"
+        title={
+          <>
+            Your day, in four <em>moments</em>.
+          </>
+        }
         description="Record, correct or remove readings for any past day."
         actions={
           <>
             <DateSelector value={date} onChange={setDate} />
-            <Button onClick={() => setFormState({ mode: 'add' })} disabled={dayFull} title={dayFull ? 'All four slots are filled' : undefined}>
-              <Plus strokeWidth={1.25} /> Add reading
+            <Button
+              size="lg"
+              onClick={() => setFormState({ mode: 'add' })}
+              disabled={dayFull}
+              title={dayFull ? 'All four slots are filled' : undefined}
+            >
+              <Plus strokeWidth={2} /> Add reading
             </Button>
           </>
         }
       />
 
       <section aria-labelledby="day-readings">
-        <div className="mb-15 flex flex-wrap items-baseline justify-between gap-2">
-          <h2 id="day-readings" className="text-subheading">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+          <h2 id="day-readings" className="font-display text-[26px] leading-tight">
             {formatDate(date, { weekday: 'long', month: 'long' })}
           </h2>
-          {readings && (
-            <span className="text-caption text-muted-foreground">
-              {readings.length} of {MAX_READINGS_PER_DAY} readings
-            </span>
-          )}
+          {readings && <DayProgress count={readings.length} />}
         </div>
 
         {error ? (
@@ -61,13 +87,14 @@ export default function ReadingsPage() {
           <>
             <ReadingSlots
               readings={readings}
+              activeSlot={activeSlot}
               onAdd={(slot) => setFormState({ mode: 'add', slot })}
               onEdit={(reading) => setFormState({ mode: 'edit', reading })}
               onDelete={setDeleting}
             />
             {readings.length === 0 && (
-              <p className="mt-15 text-body text-muted-foreground">
-                No readings for this day yet. Use “Add” next to a time slot to record one.
+              <p className="mt-5 text-muted-foreground">
+                No readings for this day yet. Use “Add reading” on a time slot to record one.
               </p>
             )}
           </>
