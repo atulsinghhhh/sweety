@@ -19,6 +19,9 @@ module.exports = defineConfig({
     // Read directly rather than via env(): `prisma generate` (run on
     // postinstall) must work before a .env file exists. Commands that connect
     // still fail clearly when it is missing.
-    url: process.env.DATABASE_URL,
+    // On Neon, DATABASE_URL is the pooled (PgBouncer) endpoint, which breaks
+    // Prisma Migrate; the CLI uses the direct DATABASE_URL_UNPOOLED instead.
+    // The app itself (src/config/db.js) keeps the pooled DATABASE_URL.
+    url: process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL,
   },
 });
