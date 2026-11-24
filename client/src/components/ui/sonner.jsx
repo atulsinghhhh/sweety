@@ -1,13 +1,15 @@
 import { Toaster as Sonner } from "sonner";
+import { useTheme } from "@/hooks/useTheme"
 import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-react"
 
 const Toaster = ({
   ...props
 }) => {
+  const { theme } = useTheme()
 
   return (
     <Sonner
-      theme="light"
+      theme={theme}
       className="toaster group"
       icons={{
         success: (
@@ -31,13 +33,12 @@ const Toaster = ({
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
-          boxShadow: "none"
+          "--border-radius": "16px"
         }
       }
       toastOptions={{
         classNames: {
-          toast: "cn-toast !shadow-none",
+          toast: "cn-toast !shadow-glow !font-sans",
         },
       }}
       {...props}

@@ -2,66 +2,61 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
+@import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
 
-/* Light-only app: dark: utilities apply only under a .dark class (never set),
-   not the OS colour-scheme preference. */
+/* Dark mode is class-based: ThemeProvider (and the inline script in
+   index.html) put .dark on <html> from the saved choice or the OS setting. */
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Sweety design system — industrial catalogue style (see design.md).
- * Light canvas, hairline rules, zero radius, zero shadows, thin type.
- * Deviations for accessibility: muted text uses #5c5c5c (not #b2b2b2) to pass
- * WCAG AA, and body copy uses weight 300 instead of 100.
+ * Sweety design system — "apothecary journal" (see DESIGN_DECISIONS.md).
+ * Warm parchment surfaces, one terracotta accent, an editorial serif for large
+ * headings (roman + italic in the same line) and Inter for every UI label.
+ * Elevation comes from stepping the cream surfaces, with only two shadows.
+ * Every colour is a CSS variable with a light (:root) and dark (.dark) value;
+ * all text pairs are ≥ 4.5:1 and control borders ≥ 3:1 in both themes.
  */
 
+@theme inline {
+    /* Surfaces, from the page up */
+    --color-paper: var(--paper);
+    --color-paper-deep: var(--paper-deep);
+    --color-taupe: var(--taupe);
+    /* The single accent. `seal` fills buttons and chart marks; `seal-ink` is
+       the text-safe shade (AA on every surface); `seal-soft` tints icon chips. */
+    --color-seal: var(--seal);
+    --color-seal-ink: var(--seal-ink);
+    --color-seal-soft: var(--seal-soft);
+    --color-seal-tan: var(--seal-tan);
+    --color-on-seal: var(--on-seal);
+}
+
 @theme {
-    /* Palette */
-    --color-canvas: #f6f8f7;
-    --color-ink: #000000;
-    --color-carbon: #0f0e12;
-    --color-steel: #e5e5e5;
-    --color-graphite: #b2b2b2;
-    /* State colors — the only chromatic notes, reserved for meaning */
-    --color-warning: #f0a800;
-    --color-link: #0071bb;
+    --font-serif: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
 
     /* Type scale */
-    --text-caption: 13px;
-    --text-caption--line-height: 1.5;
-    --text-body: 14px;
-    --text-body--line-height: 1.5;
-    --text-subheading: 19px;
-    --text-subheading--line-height: 1.15;
-    --text-heading-sm: 24px;
-    --text-heading-sm--line-height: 1.15;
-    --text-heading: 26px;
+    --text-eyebrow: 12px;
+    --text-eyebrow--line-height: 1.4;
+    --text-heading: 34px;
     --text-heading--line-height: 1.15;
-    --text-heading-lg: 40px;
-    --text-heading-lg--line-height: 1.11;
+    --text-heading-lg: 45px;
+    --text-heading-lg--line-height: 1.08;
+    --text-display: 64px;
+    --text-display--line-height: 1;
+    --text-hero: 80px;
+    --text-hero--line-height: 0.98;
 
-    /* Nothing heavier than 300 — shadcn's medium/semibold/bold map down */
-    --font-weight-medium: 300;
-    --font-weight-semibold: 300;
-    --font-weight-bold: 300;
+    --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
-    /* Spacing rhythm */
-    --spacing-15: 15px;
-    --spacing-22: 22px;
-    --spacing-33: 33px;
-    --spacing-66: 66px;
-
-    /* No elevation through shadows — only the carbon band */
-    --shadow-2xs: 0 0 #0000;
-    --shadow-xs: 0 0 #0000;
-    --shadow-sm: 0 0 #0000;
-    --shadow-md: 0 0 #0000;
-    --shadow-lg: 0 0 #0000;
-    --shadow-xl: 0 0 #0000;
-    --shadow-2xl: 0 0 #0000;
+    /* The two approved elevations: a soft glow for inputs and popovers, and a
+       long float for dialogs and the hero preview */
+    --shadow-glow: 0 0 20px 0 rgb(0 0 0 / 0.08);
+    --shadow-float: 12px 32px 80px 0 rgb(42 43 47 / 0.1);
 }
 
 @theme inline {
-    --font-heading: var(--font-sans);
+    --font-heading: var(--font-serif);
     --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --color-ring: var(--ring);
     --color-input: var(--input);
@@ -86,41 +81,118 @@
     --color-chart-3: var(--chart-3);
     --color-chart-4: var(--chart-4);
     --color-chart-5: var(--chart-5);
-    --radius-sm: var(--radius);
-    --radius-md: var(--radius);
-    --radius-lg: var(--radius);
-    --radius-xl: var(--radius);
-    --radius-2xl: var(--radius);
-    --radius-3xl: var(--radius);
-    --radius-4xl: var(--radius);
 }
 
 :root {
-    --radius: 0px;
+    /* Palette */
+    --paper: #f5eee1;
+    --paper-deep: #ede4d3;
+    --taupe: #d1c9bf;
+    --seal: #b05a36;
+    --seal-ink: #9e4c2b;
+    --seal-soft: #f3e2d4;
+    --seal-tan: #d4a68e;
+    --on-seal: #fef9ef;
 
-    --background: #f6f8f7;
-    --foreground: #000000;
-    --card: #ffffff;
-    --card-foreground: #000000;
-    --popover: #ffffff;
-    --popover-foreground: #000000;
-    --primary: #000000;
-    --primary-foreground: #f6f8f7;
-    --secondary: #ffffff;
-    --secondary-foreground: #000000;
-    --muted: #e5e5e5;
-    --muted-foreground: #5c5c5c;
-    --accent: #e5e5e5;
-    --accent-foreground: #000000;
-    --destructive: #c8102e;
-    --border: #e5e5e5;
-    --input: #000000;
-    --ring: #000000;
-    --chart-1: #000000;
-    --chart-2: #5c5c5c;
-    --chart-3: #b2b2b2;
-    --chart-4: #f0a800;
-    --chart-5: #0f0e12;
+    /* shadcn semantic tokens */
+    --background: #fef9ef;
+    --foreground: #2a2b2f;
+    --card: #fffcf6;
+    --card-foreground: #2a2b2f;
+    --popover: #fffcf6;
+    --popover-foreground: #2a2b2f;
+    --primary: #b05a36;
+    --primary-foreground: #fef9ef;
+    --secondary: #f5eee1;
+    --secondary-foreground: #2a2b2f;
+    --muted: #ede4d3;
+    --muted-foreground: #5f5850;
+    --accent: #f5eee1;
+    --accent-foreground: #2a2b2f;
+    --destructive: #a8321f;
+    --border: #e2d9cc;
+    --input: #808988;
+    --ring: #b05a36;
+    --chart-1: #b05a36;
+    --chart-2: #2a2b2f;
+    --chart-3: #d4a68e;
+    --chart-4: #d1c9bf;
+    --chart-5: #5f5850;
+}
+
+/* Dark theme: a warm "lamplit study" — umber surfaces, cream ink, and a
+   lighter terracotta so the accent keeps its contrast. */
+.dark {
+    --paper: #24201c;
+    --paper-deep: #2c2722;
+    --taupe: #4a4139;
+    --seal: #d98a66;
+    --seal-ink: #e39a78;
+    --seal-soft: #3a2a21;
+    --seal-tan: #8a5a43;
+    --on-seal: #1a1714;
+
+    --background: #1a1714;
+    --foreground: #f3ece0;
+    --card: #211d19;
+    --card-foreground: #f3ece0;
+    --popover: #2c2722;
+    --popover-foreground: #f3ece0;
+    --primary: #d98a66;
+    --primary-foreground: #1a1714;
+    --secondary: #24201c;
+    --secondary-foreground: #f3ece0;
+    --muted: #2c2722;
+    --muted-foreground: #b8ada0;
+    --accent: #2c2722;
+    --accent-foreground: #f3ece0;
+    --destructive: #ff8a7a;
+    --border: #3a332c;
+    --input: #857a6e;
+    --ring: #d98a66;
+    --chart-1: #d98a66;
+    --chart-2: #f3ece0;
+    --chart-3: #8a5a43;
+    --chart-4: #4a4139;
+    --chart-5: #b8ada0;
+    --shadow-float: 12px 32px 80px 0 rgb(0 0 0 / 0.45);
+    --shadow-glow: 0 0 20px 0 rgb(0 0 0 / 0.35);
+}
+
+/* Section pre-title: small caps label above a heading */
+@utility eyebrow {
+    font-size: var(--text-eyebrow);
+    line-height: var(--text-eyebrow--line-height);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* Editorial serif. The serif never takes the sans tracking. Any <em> inside
+   becomes the light italic accent word — the system's signature move. */
+@utility font-display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    font-optical-sizing: auto;
+    & em {
+        font-style: italic;
+        font-weight: 300;
+    }
+}
+
+/* Content entrance for app pages (CSS only, so app pages don't need Motion).
+   Stagger by setting --delay inline. Disabled for reduced motion below. */
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+@utility animate-rise {
+    animation: rise 0.6s var(--ease-out-soft) both;
+    animation-delay: var(--delay, 0ms);
 }
 
 @layer base {
@@ -131,13 +203,34 @@
     @apply font-sans;
     color-scheme: light;
   }
+  html.dark {
+    color-scheme: dark;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
   body {
-    @apply bg-background text-foreground text-body font-light antialiased;
+    @apply bg-background text-[15px] leading-normal text-foreground antialiased;
+    letter-spacing: -0.011em;
   }
   h1, h2, h3, h4 {
-    @apply font-light;
+    @apply font-normal;
   }
   a {
-    @apply text-link no-underline hover:underline;
+    @apply text-seal-ink underline-offset-4 hover:underline;
+  }
+  ::selection {
+    @apply bg-seal-soft text-foreground;
   }
 }

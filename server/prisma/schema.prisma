@@ -1,10 +1,12 @@
+// prisma-client-js generates plain JavaScript, which this CommonJS server can
+// require directly. Prisma 7's newer "prisma-client" generator emits
+// TypeScript only and would need a compile step.
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum ReadingSlot {

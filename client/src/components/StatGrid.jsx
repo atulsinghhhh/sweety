@@ -1,24 +1,47 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { GRID, STATS } from '@/components/statGridLayout'
+import { formatValue } from '@/lib/stats'
+import { cn } from '@/lib/utils'
 import EmptyState from './EmptyState'
 
-const STATS = [
-  { key: 'count', label: 'total readings', unit: null },
-  { key: 'highest', label: 'highest', unit: 'mg/dL' },
-  { key: 'lowest', label: 'lowest', unit: 'mg/dL' },
-  { key: 'average', label: 'average', unit: 'mg/dL' },
-]
-
-// A 1px gap over a hairline background draws the rules between cells at every breakpoint
-const GRID = 'grid grid-cols-2 gap-px border-t border-b border-t-ink border-b-steel bg-steel lg:grid-cols-4'
-const CELL = 'bg-background px-15 py-22 sm:px-22'
+export function StatCard({ stat, value, index = 0, className }) {
+  const Icon = stat.icon
+  return (
+    <div
+      style={{ '--delay': `${index * 60}ms` }}
+      className={cn(
+        'animate-rise flex min-h-36 flex-col justify-between gap-6 rounded-3xl p-5 sm:p-6',
+        stat.featured ? 'bg-foreground text-background' : 'bg-paper text-foreground',
+        className,
+      )}
+    >
+      <dt className="flex items-center justify-between gap-2">
+        <span className={cn('eyebrow', stat.featured ? 'opacity-75' : 'text-muted-foreground')}>{stat.label}</span>
+        <span
+          aria-hidden="true"
+          className={cn(
+            'inline-flex size-8 items-center justify-center rounded-full',
+            stat.featured ? 'bg-seal text-on-seal' : 'bg-background text-seal-ink',
+          )}
+        >
+          <Icon strokeWidth={1.75} className="size-4" />
+        </span>
+      </dt>
+      <dd className="flex items-baseline gap-1.5">
+        <span className="font-display text-[40px] leading-none tabular-nums sm:text-heading-lg">{value}</span>
+        {stat.unit && <span className={cn('text-[13px]', stat.featured ? 'opacity-75' : 'text-muted-foreground')}>{stat.unit}</span>}
+      </dd>
+    </div>
+  )
+}
 
 export function StatGridSkeleton() {
   return (
     <div className={GRID}>
       {STATS.map((stat) => (
-        <div key={stat.key} className={CELL}>
-          <Skeleton className="h-3 w-20" />
-          <Skeleton className="mt-3 h-10 w-24" />
+        <div key={stat.key} className="flex min-h-36 flex-col justify-between rounded-3xl bg-paper p-5 sm:p-6">
+          <Skeleton className="h-3 w-20 bg-paper-deep" />
+          <Skeleton className="h-10 w-24 bg-paper-deep" />
         </div>
       ))}
     </div>
@@ -32,14 +55,8 @@ export default function StatGrid({ stats, emptyTitle, emptyDescription, emptyAct
 
   return (
     <dl className={GRID}>
-      {STATS.map((stat) => (
-        <div key={stat.key} className={CELL}>
-          <dt className="text-caption text-muted-foreground">{stat.label}</dt>
-          <dd className="mt-1 text-heading-lg font-thin tabular-nums">
-            {stats[stat.key].toLocaleString('en-IN', { maximumFractionDigits: 1 })}
-            {stat.unit && <span className="ml-1.5 text-caption font-light text-muted-foreground">{stat.unit}</span>}
-          </dd>
-        </div>
+      {STATS.map((stat, index) => (
+        <StatCard key={stat.key} stat={stat} index={index} value={formatValue(stats[stat.key])} />
       ))}
     </dl>
   )

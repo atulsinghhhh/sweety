@@ -1,8 +1,7 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import api, { setUnauthorizedHandler, tokenStore } from '@/lib/api'
-
-export const AuthContext = createContext(null)
+import { AuthContext } from '@/context/AuthContext'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
