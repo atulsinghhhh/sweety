@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 export function LogoMark({ className }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={cn('size-6', className)}>
-      <path d="M12 2.5c3.6 4.4 6.5 8.2 6.5 11.8a6.5 6.5 0 0 1-13 0C5.5 10.7 8.4 6.9 12 2.5Z" className="fill-seal" />
+      <path d="M12 2.5c3.6 4.4 6.5 8.2 6.5 11.8a6.5 6.5 0 0 1-13 0C5.5 10.7 8.4 6.9 12 2.5Z" className="fill-brand" />
       <path d="M8.5 15.5h7" strokeWidth="1.5" strokeLinecap="round" className="stroke-background" />
     </svg>
   )

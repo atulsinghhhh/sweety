@@ -52,7 +52,7 @@ function DayTimeline({ readings, onAdd }) {
               aria-hidden="true"
               className={cn(
                 'relative inline-flex size-10 shrink-0 items-center justify-center rounded-full',
-                reading ? 'bg-seal text-on-seal' : 'border border-dashed border-taupe text-muted-foreground',
+                reading ? 'bg-brand text-on-brand' : 'border border-dashed border-rule text-muted-foreground',
               )}
             >
               <Icon strokeWidth={1.5} className="size-[18px]" />
@@ -232,7 +232,7 @@ export default function DashboardPage() {
                 <li key={reading.id} className="flex items-center gap-4 py-3.5 first:pt-0 last:pb-0">
                   <span
                     aria-hidden="true"
-                    className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-paper text-seal-ink"
+                    className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-ink"
                   >
                     <Icon strokeWidth={1.5} className="size-[18px]" />
                   </span>

@@ -7,7 +7,7 @@ export default function Panel({ id, eyebrow, title, aside, className, delay = 0,
     <section
       aria-labelledby={title ? id : undefined}
       style={{ '--delay': `${delay}ms` }}
-      className={cn('animate-rise rounded-3xl border border-border bg-card p-5 sm:p-7', className)}
+      className={cn('animate-rise rounded-3xl border border-border bg-card p-5 shadow-soft sm:p-7', className)}
     >
       {(title || aside) && (
         <div className="mb-5 flex flex-wrap items-end justify-between gap-x-4 gap-y-2">

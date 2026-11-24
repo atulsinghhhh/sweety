@@ -17,7 +17,7 @@ export default function DateSelector({ value, onChange, id = 'selected-date' }) 
         Selected date
       </Label>
       <div className="flex items-center gap-2">
-        <div className="flex h-11 items-center rounded-full border border-input bg-background p-1 focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/20">
+        <div className="flex h-11 items-center rounded-full border border-input bg-card p-1 focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/20">
           <Button variant="ghost" size="icon-sm" aria-label="Previous day" onClick={() => onChange(shiftDate(value, -1))}>
             <ChevronLeft strokeWidth={1.75} />
           </Button>

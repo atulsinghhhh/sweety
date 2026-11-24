@@ -66,13 +66,13 @@ function PeriodTab({ period }) {
     <TabsPrimitive.Trigger
       value={period.key}
       className={cn(
-        'group flex flex-col items-start gap-4 rounded-3xl border border-border bg-paper p-5 text-left transition-[background-color,box-shadow,border-color] duration-300 outline-none hover:bg-paper-deep focus-visible:ring-3 focus-visible:ring-ring/30 sm:p-6',
-        'data-[state=active]:border-seal data-[state=active]:bg-card data-[state=active]:shadow-glow',
+        'group flex flex-col items-start gap-4 rounded-3xl border border-border bg-card p-5 text-left shadow-soft transition-[background-color,box-shadow,border-color] duration-300 outline-none hover:border-rule focus-visible:ring-3 focus-visible:ring-ring/30 sm:p-6',
+        'data-[state=active]:border-brand data-[state=active]:bg-card data-[state=active]:shadow-glow data-[state=active]:ring-1 data-[state=active]:ring-brand',
       )}
     >
       <span className="flex w-full items-center justify-between gap-2">
-        <span className="eyebrow text-muted-foreground group-data-[state=active]:text-seal-ink">{period.label}</span>
-        <span aria-hidden="true" className="size-2 rounded-full bg-taupe group-data-[state=active]:bg-seal" />
+        <span className="eyebrow text-muted-foreground group-data-[state=active]:text-brand-ink">{period.label}</span>
+        <span aria-hidden="true" className="size-2 rounded-full bg-rule group-data-[state=active]:bg-brand" />
       </span>
       <span>
         <span className="block font-display text-[34px] leading-none tabular-nums">
@@ -137,7 +137,7 @@ function RangeDetail({ range, title }) {
                     return (
                       <th key={slot.value} scope="col" className="pb-3 text-right font-semibold">
                         <span className="inline-flex items-center gap-1.5">
-                          <Icon strokeWidth={1.5} className="size-3.5 text-seal-ink" aria-hidden="true" />
+                          <Icon strokeWidth={1.5} className="size-3.5 text-brand-ink" aria-hidden="true" />
                           {SLOT_META[slot.value].short}
                         </span>
                       </th>

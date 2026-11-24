@@ -34,7 +34,7 @@ function MiniTrend() {
     <svg viewBox={`-6 -6 ${w + 12} ${h + 12}`} className="h-24 w-full" preserveAspectRatio="none">
       <m.path
         d={`${line} L${w},${h + 6} L0,${h + 6} Z`}
-        className="fill-seal/10"
+        className="fill-brand/10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 1.1 }}
@@ -42,7 +42,7 @@ function MiniTrend() {
       <m.path
         d={line}
         fill="none"
-        className="stroke-seal"
+        className="stroke-brand"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -66,16 +66,16 @@ export default function DashboardPreview() {
         <div aria-hidden="true">
           <div className="flex items-center justify-between border-b border-border bg-paper px-5 py-3">
             <div className="flex gap-1.5">
-              <span className="size-2.5 rounded-full bg-taupe" />
-              <span className="size-2.5 rounded-full bg-taupe" />
-              <span className="size-2.5 rounded-full bg-taupe" />
+              <span className="size-2.5 rounded-full bg-rule" />
+              <span className="size-2.5 rounded-full bg-rule" />
+              <span className="size-2.5 rounded-full bg-rule" />
             </div>
             <span className="text-[12px] text-muted-foreground">sweety · dashboard</span>
             <span className="w-10" />
           </div>
 
           <div className="p-4 sm:p-6">
-            <p className="eyebrow text-seal-ink">Today</p>
+            <p className="eyebrow text-brand-ink">Today</p>
             <p className="mt-1 font-display text-[28px] leading-tight">
               Good morning, <em>there</em>.
             </p>
@@ -107,7 +107,7 @@ export default function DashboardPreview() {
                   const Icon = SLOT_META[slot.value].icon
                   return (
                     <m.li key={slot.value} variants={fadeUp} className="flex items-center gap-2.5">
-                      <span className="inline-flex size-6 items-center justify-center rounded-full bg-seal text-on-seal">
+                      <span className="inline-flex size-6 items-center justify-center rounded-full bg-brand text-on-brand">
                         <Icon strokeWidth={1.75} className="size-3" />
                       </span>
                       <span className="flex-1 truncate text-[12px]">{SLOT_META[slot.value].short}</span>

@@ -10,7 +10,7 @@ export default function NotFoundPage() {
         <Logo />
       </Link>
       <div className="animate-rise flex flex-1 flex-col items-start justify-center gap-5">
-        <p className="eyebrow text-seal-ink">Error 404</p>
+        <p className="eyebrow text-brand-ink">Error 404</p>
         <h1 className="font-display text-[56px] leading-none sm:text-display">
           Page <em>not found</em>.
         </h1>

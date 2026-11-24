@@ -37,7 +37,7 @@ export default function AppLayout() {
           className={({ isActive }) =>
             cn(
               'inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 hover:no-underline',
-              isActive ? 'bg-background text-seal-ink shadow-glow' : 'text-muted-foreground hover:text-foreground',
+              isActive ? 'bg-card text-brand-ink shadow-glow' : 'text-muted-foreground hover:text-foreground',
             )
           }
         >
@@ -63,7 +63,7 @@ export default function AppLayout() {
             <div className="ml-1 hidden items-center gap-3 lg:flex">
               <span
                 aria-hidden="true"
-                className="inline-flex size-9 items-center justify-center rounded-full bg-seal-soft text-[13px] font-semibold text-seal-ink"
+                className="inline-flex size-9 items-center justify-center rounded-full bg-brand-soft text-[13px] font-semibold text-brand-ink"
               >
                 {initials(user?.name)}
               </span>

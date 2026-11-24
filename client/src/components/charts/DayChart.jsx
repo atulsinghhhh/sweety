@@ -27,12 +27,12 @@ export default function DayChart({ readings, height = 260 }) {
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 24, right: 8, bottom: 0, left: 0 }} barCategoryGap="28%">
           <CartesianGrid vertical={false} stroke="var(--border)" />
-          <XAxis dataKey="slot" tick={AXIS_TICK} tickLine={false} axisLine={{ stroke: 'var(--taupe)' }} tickMargin={10} />
+          <XAxis dataKey="slot" tick={AXIS_TICK} tickLine={false} axisLine={{ stroke: 'var(--rule)' }} tickMargin={10} />
           <YAxis tick={AXIS_TICK} tickLine={false} axisLine={false} width={44} allowDecimals={false} domain={[0, (max) => Math.ceil((max + 30) / 50) * 50]} />
           <Tooltip content={<DayTooltip />} cursor={{ fill: 'var(--paper)' }} isAnimationActive={false} />
           <Bar
             dataKey="value"
-            fill="var(--seal)"
+            fill="var(--brand)"
             radius={[4, 4, 0, 0]}
             maxBarSize={56}
             isAnimationActive={!reduced}

@@ -11,7 +11,7 @@ export function StatCard({ stat, value, index = 0, className }) {
       style={{ '--delay': `${index * 60}ms` }}
       className={cn(
         'animate-rise flex min-h-36 flex-col justify-between gap-6 rounded-3xl p-5 sm:p-6',
-        stat.featured ? 'bg-foreground text-background' : 'bg-paper text-foreground',
+        stat.featured ? 'bg-foreground text-background shadow-glow' : 'border border-border bg-card shadow-soft text-foreground',
         className,
       )}
     >
@@ -21,7 +21,7 @@ export function StatCard({ stat, value, index = 0, className }) {
           aria-hidden="true"
           className={cn(
             'inline-flex size-8 items-center justify-center rounded-full',
-            stat.featured ? 'bg-seal text-on-seal' : 'bg-background text-seal-ink',
+            stat.featured ? 'bg-brand text-on-brand' : 'bg-brand-soft text-brand-ink',
           )}
         >
           <Icon strokeWidth={1.75} className="size-4" />
@@ -39,7 +39,7 @@ export function StatGridSkeleton() {
   return (
     <div className={GRID}>
       {STATS.map((stat) => (
-        <div key={stat.key} className="flex min-h-36 flex-col justify-between rounded-3xl bg-paper p-5 sm:p-6">
+        <div key={stat.key} className="flex min-h-36 flex-col justify-between rounded-3xl border border-border bg-card shadow-soft p-5 sm:p-6">
           <Skeleton className="h-3 w-20 bg-paper-deep" />
           <Skeleton className="h-10 w-24 bg-paper-deep" />
         </div>

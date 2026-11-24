@@ -76,7 +76,7 @@ function Container({ className = '', children }) {
 function SectionHeading({ eyebrow, title, text, className }) {
   return (
     <m.div variants={stagger(0, 0.06)} {...inView} className={cn('max-w-2xl', className)}>
-      <m.p variants={fadeUp} className="eyebrow text-seal-ink">
+      <m.p variants={fadeUp} className="eyebrow text-brand-ink">
         {eyebrow}
       </m.p>
       <m.h2 variants={fadeUp} className="mt-3 font-display text-[40px] leading-[1.05] sm:text-display">
@@ -103,7 +103,7 @@ function LandingNav() {
   const { user } = useAuth()
 
   return (
-    <header className="sticky top-0 z-40 border-b border-taupe/60 bg-background/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-rule/60 bg-background/85 backdrop-blur-md">
       <Container className="flex h-18 items-center justify-between gap-4">
         <Link to="/" aria-label="Sweety home" className="hover:no-underline">
           <Logo />
@@ -142,7 +142,7 @@ function LandingNav() {
   )
 }
 
-// Soft terracotta "seal" discs drifting a few pixels on a slow loop behind the
+// Soft terracotta "brand" discs drifting a few pixels on a slow loop behind the
 // preview. Desktop only, transform-only, static with reduced motion.
 function FloatingDecor() {
   const drift = (distance, duration, delay = 0) => ({
@@ -153,9 +153,9 @@ function FloatingDecor() {
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
       <m.span
         {...drift(12, 10)}
-        className="absolute -top-10 -right-8 size-44 rounded-full bg-[linear-gradient(116deg,var(--seal),var(--seal-tan))] opacity-25 blur-[2px] sm:size-56"
+        className="absolute -top-10 -right-8 size-44 rounded-full bg-[linear-gradient(116deg,var(--brand),var(--brand-muted))] opacity-25 blur-[2px] sm:size-56"
       />
-      <m.span {...drift(8, 12, 1.5)} className="absolute -bottom-10 -left-8 hidden size-28 rounded-full border border-taupe lg:block" />
+      <m.span {...drift(8, 12, 1.5)} className="absolute -bottom-10 -left-8 hidden size-28 rounded-full border border-rule lg:block" />
     </div>
   )
 }
@@ -175,9 +175,9 @@ function Hero() {
         <m.div variants={stagger(0.05, 0.07)} initial="hidden" animate="visible">
           <m.p
             variants={fadeUp}
-            className="inline-flex items-center gap-2 rounded-full border border-taupe bg-paper px-3.5 py-1.5 text-[13px] font-semibold"
+            className="inline-flex items-center gap-2 rounded-full border border-rule bg-paper px-3.5 py-1.5 text-[13px] font-semibold"
           >
-            <span className="size-1.5 rounded-full bg-seal" aria-hidden="true" />
+            <span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />
             Personal blood glucose journal
           </m.p>
           <h1 className="mt-7 font-display text-[52px] leading-[0.98] sm:text-[72px] xl:text-hero">
@@ -203,7 +203,7 @@ function Hero() {
             </CtaButton>
           </m.div>
 
-          <m.dl variants={fadeUp} className="mt-12 flex max-w-lg divide-x divide-taupe">
+          <m.dl variants={fadeUp} className="mt-12 flex max-w-lg divide-x divide-rule">
             {HERO_FACTS.map((fact) => (
               <div key={fact.label} className="flex-1 px-5 first:pl-0 last:pr-0">
                 <dt className="sr-only">{fact.label}</dt>
@@ -254,9 +254,9 @@ function Features() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.4 }}
-              className="group rounded-3xl bg-background p-7 transition-shadow duration-300 hover:shadow-float sm:p-8"
+              className="group rounded-3xl border border-border bg-card p-7 shadow-soft transition-shadow duration-300 hover:shadow-float sm:p-8"
             >
-              <span className="inline-flex size-12 items-center justify-center rounded-full bg-seal-soft text-seal-ink transition-colors duration-300 group-hover:bg-seal group-hover:text-on-seal">
+              <span className="inline-flex size-12 items-center justify-center rounded-full bg-brand-soft text-brand-ink transition-colors duration-300 group-hover:bg-brand group-hover:text-on-brand">
                 <feature.icon strokeWidth={1.5} className="size-5" aria-hidden="true" />
               </span>
               <h3 className="mt-8 font-display text-[26px] leading-tight">{feature.title}</h3>
@@ -274,7 +274,7 @@ function RegisterVignette() {
   return (
     <div className="space-y-2">
       {['Name', 'Email', 'Password'].map((label, i) => (
-        <div key={label} className="flex h-9 items-center rounded-full border border-taupe bg-background px-4 text-[12px] text-muted-foreground">
+        <div key={label} className="flex h-9 items-center rounded-full border border-rule bg-background px-4 text-[12px] text-muted-foreground">
           {label}
           {i === 2 && <span className="ml-auto tracking-widest">••••••••</span>}
         </div>
@@ -293,7 +293,7 @@ function RecordVignette() {
             key={slot.value}
             className={cn(
               'flex items-center gap-2 rounded-full border px-3 py-2 text-[12px]',
-              i === 2 ? 'border-seal bg-background font-semibold text-seal-ink' : 'border-taupe text-muted-foreground',
+              i === 2 ? 'border-brand bg-background font-semibold text-brand-ink' : 'border-rule text-muted-foreground',
             )}
           >
             <Icon strokeWidth={1.5} className="size-3.5" />
@@ -307,7 +307,7 @@ function RecordVignette() {
 
 function ReviewVignette() {
   return (
-    <div className="flex h-[84px] items-end gap-1.5 border-b border-taupe">
+    <div className="flex h-[84px] items-end gap-1.5 border-b border-rule">
       {SAMPLE_BARS.slice(0, 8).map((v, i) => (
         <m.span
           key={i}
@@ -316,7 +316,7 @@ function ReviewVignette() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: EASE, delay: 0.3 + i * 0.05 }}
           style={{ height: `${((v - 90) / 60) * 100}%` }}
-          className={cn('flex-1 origin-bottom rounded-t-[2px]', i === 5 ? 'bg-seal' : 'bg-seal-tan/70')}
+          className={cn('flex-1 origin-bottom rounded-t-[2px]', i === 5 ? 'bg-brand' : 'bg-brand-muted/70')}
         />
       ))}
     </div>
@@ -361,8 +361,8 @@ function HowItWorks() {
           className="mt-14 grid gap-4 md:grid-cols-3"
         >
           {STEPS.map((step, index) => (
-            <m.li key={step.title} variants={fadeUp} className="flex flex-col rounded-3xl bg-paper px-7 pt-9 pb-7 sm:px-8">
-              <span className="eyebrow text-seal-ink tabular-nums">Step 0{index + 1}</span>
+            <m.li key={step.title} variants={fadeUp} className="flex flex-col rounded-3xl border border-border bg-card px-7 pt-9 pb-7 shadow-soft sm:px-8">
+              <span className="eyebrow text-brand-ink tabular-nums">Step 0{index + 1}</span>
               <h3 className="mt-4 font-display text-heading leading-tight">{step.title}</h3>
               <p className="mt-3 text-muted-foreground">{step.text}</p>
               <div aria-hidden="true" className="mt-auto pt-10">
@@ -378,7 +378,7 @@ function HowItWorks() {
 
 function ReportsShowcase() {
   return (
-    <section id="reports" className="scroll-mt-20 border-t border-taupe/60 py-20 sm:py-28">
+    <section id="reports" className="scroll-mt-20 border-t border-rule/60 py-20 sm:py-28">
       <Container className="grid items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         <div>
           <SectionHeading
@@ -400,7 +400,7 @@ function ReportsShowcase() {
               <li key={term} className="flex items-center">
                 {term}
                 {i < REPORT_TERMS.length - 1 && (
-                  <span aria-hidden="true" className="px-4 text-seal">
+                  <span aria-hidden="true" className="px-4 text-brand">
                     ·
                   </span>
                 )}
@@ -428,8 +428,8 @@ function ReportsShowcase() {
                   ['Month to date', '127.4'],
                   ['Previous month', '129.1'],
                 ].map(([label, value], i) => (
-                  <div key={label} className={cn('rounded-2xl border p-3', i === 1 ? 'border-seal bg-background' : 'border-border bg-paper')}>
-                    <p className={cn('truncate text-[10px] font-semibold tracking-[0.06em] uppercase', i === 1 ? 'text-seal-ink' : 'text-muted-foreground')}>
+                  <div key={label} className={cn('rounded-2xl border p-3', i === 1 ? 'border-brand bg-background' : 'border-border bg-paper')}>
+                    <p className={cn('truncate text-[10px] font-semibold tracking-[0.06em] uppercase', i === 1 ? 'text-brand-ink' : 'text-muted-foreground')}>
                       {label}
                     </p>
                     <p className="mt-2 font-display text-[22px] leading-none sm:text-[26px]">{value}</p>
@@ -437,7 +437,7 @@ function ReportsShowcase() {
                 ))}
               </div>
               <p className="mt-6 text-[10px] font-semibold tracking-[0.06em] text-muted-foreground uppercase">Daily average · mg/dL</p>
-              <div className="mt-3 flex h-40 items-end gap-1.5 border-b border-taupe sm:gap-2">
+              <div className="mt-3 flex h-40 items-end gap-1.5 border-b border-rule sm:gap-2">
                 {SAMPLE_BARS.map((v, i) => (
                   <m.span
                     key={i}
@@ -446,7 +446,7 @@ function ReportsShowcase() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.7, ease: EASE, delay: 0.2 + i * 0.04 }}
                     style={{ height: `${((v - 90) / 60) * 100}%` }}
-                    className={cn('flex-1 origin-bottom rounded-t-[2px]', i === 9 ? 'bg-seal' : 'bg-seal-tan/70')}
+                    className={cn('flex-1 origin-bottom rounded-t-[2px]', i === 9 ? 'bg-brand' : 'bg-brand-muted/70')}
                   />
                 ))}
               </div>
@@ -470,7 +470,7 @@ function FinalCta() {
         >
           <span
             aria-hidden="true"
-            className="absolute -top-24 -right-24 -z-10 size-80 rounded-full bg-[linear-gradient(116deg,var(--seal),var(--seal-tan))] opacity-30"
+            className="absolute -top-24 -right-24 -z-10 size-80 rounded-full bg-[linear-gradient(116deg,var(--brand),var(--brand-muted))] opacity-30"
           />
           <div className="flex flex-col items-start gap-8 md:flex-row md:items-end md:justify-between">
             <div className="max-w-xl">
@@ -491,7 +491,7 @@ function FinalCta() {
 
 function Footer() {
   return (
-    <footer className="border-t border-taupe/60 bg-paper">
+    <footer className="border-t border-rule/60 bg-paper">
       <Container className="grid gap-12 py-14 sm:py-16 md:grid-cols-[1.4fr_1fr]">
         <div>
           <Logo />
@@ -524,7 +524,7 @@ function Footer() {
             </li>
           </ul>
         </nav>
-        <div className="border-t border-taupe pt-8 md:col-span-2">
+        <div className="border-t border-rule pt-8 md:col-span-2">
           <p className="max-w-3xl text-[13px] text-muted-foreground">
             <strong className="font-semibold text-foreground">Medical disclaimer:</strong> Sweety is a personal
             record-keeping tool. It does not diagnose, treat or prevent any condition, and it does not provide medical

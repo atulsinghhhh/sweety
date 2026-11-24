@@ -12,20 +12,20 @@ export default function AuthLayout({ title, description, children }) {
       <section className="relative isolate hidden flex-col justify-between gap-12 overflow-hidden bg-paper px-12 py-12 lg:flex xl:px-16">
         <span
           aria-hidden="true"
-          className="absolute -right-32 -bottom-32 -z-10 size-[28rem] rounded-full bg-[linear-gradient(116deg,var(--seal),var(--seal-tan))] opacity-20"
+          className="absolute -right-32 -bottom-32 -z-10 size-[28rem] rounded-full bg-[linear-gradient(116deg,var(--brand),var(--brand-muted))] opacity-20"
         />
         <Link to="/" aria-label="Sweety home" className="self-start hover:no-underline">
           <Logo />
         </Link>
         <div className="max-w-md">
-          <p className="eyebrow text-seal-ink">Blood glucose journal</p>
+          <p className="eyebrow text-brand-ink">Blood glucose journal</p>
           <p className="mt-4 font-display text-display">
             Know your <em>numbers</em>.
           </p>
           <ul className="mt-8 space-y-3">
             {POINTS.map((point) => (
               <li key={point} className="flex items-center gap-3 text-muted-foreground">
-                <span aria-hidden="true" className="size-1.5 rounded-full bg-seal" />
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
                 {point}
               </li>
             ))}
@@ -35,7 +35,7 @@ export default function AuthLayout({ title, description, children }) {
           {SLOTS.map((slot) => {
             const Icon = SLOT_META[slot.value].icon
             return (
-              <li key={slot.value} className="inline-flex size-11 items-center justify-center rounded-full border border-taupe bg-background text-seal-ink">
+              <li key={slot.value} className="inline-flex size-11 items-center justify-center rounded-full border border-rule bg-background text-brand-ink">
                 <Icon strokeWidth={1.5} className="size-[18px]" />
               </li>
             )
