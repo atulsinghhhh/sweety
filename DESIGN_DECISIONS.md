@@ -12,7 +12,7 @@ This document records how Sweety's interface was designed, which reference it fo
 
 **How it works**
 - **Default:** follows the operating system (`prefers-color-scheme`) until the user picks a theme with the sun/moon toggle. The toggle is in the app header, the landing-page nav and the login/register pages. The choice is saved in `localStorage` (`sweety_theme`), and the OS setting is followed live while no choice is saved.
-- **No flash of the wrong theme:** a small inline script in `client/index.html` sets the `.dark` class on `<html>` before the first paint. `ThemeProvider` (`src/context/ThemeContext.jsx`) keeps it in sync afterwards.
+- **No flash of the wrong theme:** a small inline script in `client/index.html` sets the `.dark` class on `<html>` before the first paint. `ThemeProvider` (`src/context/ThemeProvider.jsx`) keeps it in sync afterwards.
 - **Tokens only:** every colour, including the palette tokens `ink`, `steel`, `canvas`, `carbon`, `mint` and `leaf`, is a CSS variable with a light (`:root`) and a dark (`.dark`) value, so components contain almost no theme logic. The exceptions:
   - Text on the always-dark carbon bands uses `on-carbon`, which stays light in both themes.
   - The error icon's stroke is fixed black because it sits on amber.
@@ -118,5 +118,5 @@ Animations use **Motion for React** (`motion`, formerly Framer Motion) on the la
 
 **Accessibility and performance**
 - **Reduced motion:** with `prefers-reduced-motion: reduce`, `MotionConfig reducedMotion="user"` drops all movement, so content only fades in place. The floating shapes stay still, the count-up shows final values immediately, and the CSS hover and tap effects are `motion-safe:` only. This was verified in headless Chrome with `--force-prefers-reduced-motion`: no transforms were applied at any point.
-- **Bundle:** `LazyMotion` with the `domAnimation` feature set and `m.*` components keep Motion small. The landing page is loaded as its own chunk (`React.lazy`), so signed-in app pages never download Motion. The landing chunk is about 37 kB gzipped, and the main bundle got slightly smaller than before the landing page existed.
+- **Bundle:** `LazyMotion` with the `domAnimation` feature set and `m.*` components keep Motion small. The landing page is loaded as its own chunk (`React.lazy`), so signed-in app pages never download Motion. Every other page is lazy-loaded too, which keeps the main chunk at about 315 kB minified (100 kB gzipped). The landing chunk is about 37 kB gzipped, and the main bundle got slightly smaller than before the landing page existed.
 - **Not built: the chart-line animation.** The brief asked for one in the dashboard preview, but the app has no chart (the Recharts chart is an unbuilt bonus feature). Showing an animated chart in a "preview of the existing application" would advertise a feature Sweety does not have, so it was left out.

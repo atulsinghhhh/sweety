@@ -268,7 +268,7 @@ sweety/
 │       ├── components/         Layout, route guards, forms, dialogs, stat grid, logo
 │       │   ├── landing/        Landing-page dashboard preview and scroll reveal
 │       │   └── ui/             shadcn/ui components
-│       ├── context/            AuthContext (session state)
+│       ├── context/            Auth and theme contexts with their providers
 │       ├── hooks/              useAuth, useAsync, useDateParam
 │       ├── lib/                API client, date helpers, validation rules
 │       └── pages/              Landing, Login, Register, Dashboard, Readings, Reports
@@ -339,7 +339,6 @@ The interface follows the light, industrial style reference in [design.md](desig
 - **No token revocation or refresh.** Logout is client-side; tokens stay valid until they expire (7 days by default).
 - **No security headers middleware** (e.g. `helmet`). The API is JSON-only and disables `X-Powered-By`, but headers such as HSTS belong in production.
 - **No frontend automated tests** (optional bonus). The client was verified manually in Chrome.
-- **Large main bundle** (~520 kB minified, 169 kB gzipped). The landing page is already a separate chunk; splitting the signed-in pages too would reduce first load further.
 - **Bonus features not implemented:** Docker Compose, full pagination UI, Recharts chart, React Testing Library tests, Redis caching, BullMQ reminders and the doctor role. `GET /api/readings` already supports `limit`, `from` and `to`, which a paginated view could build on.
 - **Prisma generator.** `prisma-client-js` is deprecated in Prisma 7 and planned for removal in a later major version. Migrating to the TypeScript-only `prisma-client` generator needs a TypeScript build step (or converting the server to TypeScript).
 - **Glucose targets.** Highlighting out-of-range values (e.g. below 70 or above 180 mg/dL) would be useful, but target ranges are personal and should be configurable per patient.
