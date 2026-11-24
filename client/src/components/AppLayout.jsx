@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import ThemeToggle from '@/components/ThemeToggle'
@@ -54,7 +55,10 @@ export default function AppLayout() {
 
       <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-33 sm:px-6 sm:py-66">
         <div className="animate-in fade-in duration-300">
-          <Outlet />
+          {/* Keeps the header and nav on screen while the next page's chunk loads */}
+          <Suspense fallback={null}>
+            <Outlet />
+          </Suspense>
         </div>
       </main>
 

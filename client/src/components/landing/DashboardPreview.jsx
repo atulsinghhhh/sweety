@@ -1,6 +1,6 @@
 import { m } from 'motion/react'
 import ReadingSlots from '@/components/ReadingSlots'
-import { CELL, GRID, STATS } from '@/components/StatGrid'
+import { CELL, GRID, STATS } from '@/components/statGridLayout'
 import { cn } from '@/lib/utils'
 import CountUp from './CountUp'
 import { fadeUp, stagger } from './motion'

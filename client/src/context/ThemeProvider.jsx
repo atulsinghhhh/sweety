@@ -1,6 +1,5 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
-
-export const ThemeContext = createContext(null)
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { ThemeContext } from '@/context/ThemeContext'
 
 const STORAGE_KEY = 'sweety_theme'
 const DARK_QUERY = '(prefers-color-scheme: dark)'
