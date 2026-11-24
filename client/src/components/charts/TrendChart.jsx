@@ -52,8 +52,8 @@ export default function TrendChart({ readings, from, to, height = 280 }) {
         <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
           <defs>
             <linearGradient id="trend-band" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--seal)" stopOpacity={0.22} />
-              <stop offset="100%" stopColor="var(--seal)" stopOpacity={0.06} />
+              <stop offset="0%" stopColor="var(--brand)" stopOpacity={0.22} />
+              <stop offset="100%" stopColor="var(--brand)" stopOpacity={0.06} />
             </linearGradient>
           </defs>
           <CartesianGrid vertical={false} stroke="var(--border)" />
@@ -62,7 +62,7 @@ export default function TrendChart({ readings, from, to, height = 280 }) {
             tickFormatter={(d) => formatShortDate(d)}
             tick={AXIS_TICK}
             tickLine={false}
-            axisLine={{ stroke: 'var(--taupe)' }}
+            axisLine={{ stroke: 'var(--rule)' }}
             interval={longRange ? 'preserveStartEnd' : 1}
             minTickGap={16}
             tickMargin={10}
@@ -77,7 +77,7 @@ export default function TrendChart({ readings, from, to, height = 280 }) {
           />
           <Tooltip
             content={<TrendTooltip />}
-            cursor={{ stroke: 'var(--taupe)', strokeWidth: 1 }}
+            cursor={{ stroke: 'var(--rule)', strokeWidth: 1 }}
             isAnimationActive={false}
           />
           <Area
@@ -91,10 +91,10 @@ export default function TrendChart({ readings, from, to, height = 280 }) {
           />
           <Line
             dataKey="average"
-            stroke="var(--seal)"
+            stroke="var(--brand)"
             strokeWidth={2}
-            dot={{ r: longRange ? 0 : 3.5, fill: 'var(--seal)', stroke: 'var(--card)', strokeWidth: 2 }}
-            activeDot={{ r: 5, fill: 'var(--seal)', stroke: 'var(--card)', strokeWidth: 2 }}
+            dot={{ r: longRange ? 0 : 3.5, fill: 'var(--brand)', stroke: 'var(--card)', strokeWidth: 2 }}
+            activeDot={{ r: 5, fill: 'var(--brand)', stroke: 'var(--card)', strokeWidth: 2 }}
             connectNulls
             isAnimationActive={!reduced}
             animationDuration={900}

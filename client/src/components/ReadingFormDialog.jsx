@@ -19,7 +19,7 @@ import { SLOT_META } from './slotMeta'
 
 function SlotIcon({ slot }) {
   const Icon = SLOT_META[slot].icon
-  return <Icon strokeWidth={1.5} className="text-seal-ink" aria-hidden="true" />
+  return <Icon strokeWidth={1.5} className="text-brand-ink" aria-hidden="true" />
 }
 
 function initialForm(reading, defaults) {
@@ -100,7 +100,7 @@ export default function ReadingFormDialog({ open, onOpenChange, reading, default
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <p className="eyebrow text-seal-ink">{isEdit ? 'Edit' : 'New entry'}</p>
+          <p className="eyebrow text-brand-ink">{isEdit ? 'Edit' : 'New entry'}</p>
           <DialogTitle>{isEdit ? 'Edit reading' : 'Add reading'}</DialogTitle>
           <DialogDescription>Up to four readings a day — one per time slot.</DialogDescription>
         </DialogHeader>

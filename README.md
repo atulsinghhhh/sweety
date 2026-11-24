@@ -2,7 +2,7 @@
 
 A full-stack web app for people with diabetes to record up to four blood glucose readings a day and review daily, month-to-date and monthly reports.
 
-Built for the Kenpath **Junior Full Stack Developer – JavaScript & AI** technical assignment. Requirements: [prd.md](prd.md).
+Built for the Kenpath **Junior Full Stack Developer – JavaScript & AI** technical assignment. The requirements came from the assignment brief.
 
 ![Dashboard](screenshots/02-dashboard.jpg)
 
@@ -285,8 +285,6 @@ sweety/
 │   │   └── utils/              Date helpers, reading rules, AppError
 │   └── tests/                  Jest + Supertest
 ├── screenshots/
-├── prd.md                      Assignment requirements
-├── design.md                   Earlier style reference (superseded)
 ├── DESIGN_DECISIONS.md         Current design system, charts, motion and accessibility
 └── .env.example
 ```
@@ -315,7 +313,7 @@ sweety/
 
 ## Design
 
-The interface uses a warm "apothecary journal" system: parchment surfaces, a single terracotta accent, editorial serif headlines (Newsreader, mixing roman and italic) over Inter UI text, pill-shaped controls and 24px cards. The dashboard and reports include Recharts trend and bar charts built from the existing readings API.
+The interface is a calm healthcare-SaaS design: a warm off-white canvas, white cards with subtle borders and soft shadows, a sage-green accent, deep charcoal text, and editorial serif headlines (Newsreader) over Inter UI text. The dashboard and reports include Recharts trend and bar charts built from the existing readings API.
 
 **Light and dark themes.** The theme follows the operating system until the user picks one with the sun/moon toggle; the choice is remembered. Both palettes meet WCAG AA.
 

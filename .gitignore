@@ -16,8 +16,6 @@ coverage/
 .vscode/
 .idea/
 
-# Local-only docs and screenshots (kept on disk, not published)
-screenshots/
+# Local-only planning docs (kept on disk, not published)
 prd.md
 design.md
-DESIGN_DECISIONS.md

@@ -21,7 +21,7 @@ function DayProgress({ count }) {
         {Array.from({ length: MAX_READINGS_PER_DAY }, (_, i) => (
           <span
             key={i}
-            className={cn('h-1.5 w-7 rounded-full transition-colors duration-500', i < count ? 'bg-seal' : 'bg-paper-deep')}
+            className={cn('h-1.5 w-7 rounded-full transition-colors duration-500', i < count ? 'bg-brand' : 'bg-paper-deep')}
           />
         ))}
       </div>
